@@ -3,13 +3,13 @@ var renderer = new THREE.WebGLRenderer({antialias: true});
 var scene = new THREE.Scene();
 var group = new THREE.Group();
 
-window.innerWidth = 2400;
-window.innerHeight = 1200;
+window.innerWidth = 1920;
+window.innerHeight = 1080;
 
 renderer.setSize(window.innerWidth, window.innerHeight);
 $container.append(renderer.domElement);
 
-var camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.5, 1000 );
+var camera = new THREE.PerspectiveCamera(67.5, window.innerWidth / window.innerHeight, 0.5, 10000 );
 camera.lookAt(scene.position);
 scene.add(camera);
 
@@ -23,7 +23,7 @@ const controls = new THREE.OrbitControls(camera, renderer.domElement);
 
 // Materials
 var mat = new THREE.MeshLambertMaterial({
-  color      :  0x9900ff,
+  color      :  0xaa90dd,
   wireframe  :  true,
   // emissive   :  new THREE.Color("rgb(255,255,255)"),
   // specular   :  new THREE.Color("rgb(255,255,255)"),
