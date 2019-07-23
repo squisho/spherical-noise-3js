@@ -23,7 +23,7 @@ const controls = new THREE.OrbitControls(camera, renderer.domElement);
 
 // Materials
 var mat = new THREE.MeshLambertMaterial({
-  color      :  0x00ffff,
+  color      :  0x9900ff,
   wireframe  :  true,
   // emissive   :  new THREE.Color("rgb(255,255,255)"),
   // specular   :  new THREE.Color("rgb(255,255,255)"),
