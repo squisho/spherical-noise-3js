@@ -66,12 +66,11 @@ function handleSuccess( stream ) {
   if (!analyzer) initAnalyzer(stream);
 }
 
-function initAnalyzer(stream){
+function initAnalyzer(stream) {
 
   const audioContext = new AudioContext();
   // set audio source to input stream from microphone (Web Audio API https://developer.mozilla.org/en-US/docs/Web/API/MediaStreamAudioSourceNode)
   const source = audioContext.createMediaStreamSource(stream);
-  source.connect(audioContext.destination);
 
   analyzer = Meyda.createMeydaAnalyzer({
     "audioContext": audioContext,
@@ -91,30 +90,31 @@ let offset = 0;
 
 const f = n => n * 2 + offset;
 
-function getSoundData(soundData){
+function getSoundData(soundData) {
   return {
     "rms": analyzer.get('rms'),
-    "energy": analyzer.get('energy')};
+    "energy": analyzer.get('energy')
+  };
 }
 
-function update(){
-   // ico.rotation.x+=2/100;
-   // ico.rotation.y+=2/100;
-   let soundData;
-   if (analyzer) soundData = getSoundData(soundData);
-   console.log(soundData);
+function update() {
+  // ico.rotation.x+=2/100;
+  // ico.rotation.y+=2/100;
+  let soundData;
+  if (analyzer) soundData = getSoundData(soundData);
+  console.log(soundData);
 
-   if (!originalVertices) originalVertices = ico.geometry.vertices;
-   ico.geometry.vertices.forEach((vertex, i) => {
-     const p = vertex.normalize();
-     const r = noise.perlin3(f(p.x), f(p.y), f(p.z)) * 4 + 20;
-     p.multiplyScalar(r);
-   });
-   ico.geometry.verticesNeedUpdate = true;
+  if (!originalVertices) originalVertices = ico.geometry.vertices;
+  ico.geometry.vertices.forEach((vertex, i) => {
+    const p = vertex.normalize();
+    const r = noise.perlin3(f(p.x), f(p.y), f(p.z)) * 4 + 20;
+    p.multiplyScalar(r);
+  });
+  ico.geometry.verticesNeedUpdate = true;
 
-   three.group.rotation.y += 0.0001;
+  three.group.rotation.y += 0.0001;
 
-   offset += 0.005;
+  offset += 0.005;
 }
 
 // Render
@@ -130,14 +130,14 @@ render();
 
 
 function makeRoughGround(mesh, distortionFr) {
-    mesh.geometry.vertices.forEach(function (vertex, i) {
-        const amp = 2;
-        const time = Date.now();
-        const distance = (noise.perlin3(vertex.x + time * 0.0003, vertex.y + time * 0.0001, time * 0.0001) + 0) * distortionFr * amp;
-        vertex.z = distance;
-    });
-    mesh.geometry.verticesNeedUpdate = true;
-    mesh.geometry.normalsNeedUpdate = true;
-    mesh.geometry.computeVertexNormals();
-    mesh.geometry.computeFaceNormals();
+  mesh.geometry.vertices.forEach(function (vertex, i) {
+    const amp = 2;
+    const time = Date.now();
+    const distance = (noise.perlin3(vertex.x + time * 0.0003, vertex.y + time * 0.0001, time * 0.0001) + 0) * distortionFr * amp;
+    vertex.z = distance;
+  });
+  mesh.geometry.verticesNeedUpdate = true;
+  mesh.geometry.normalsNeedUpdate = true;
+  mesh.geometry.computeVertexNormals();
+  mesh.geometry.computeFaceNormals();
 }
