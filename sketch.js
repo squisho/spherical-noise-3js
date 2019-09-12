@@ -25,7 +25,7 @@ const planeGeometry = new THREE.PlaneGeometry(800, 800, 40, 40);
 // IcoSphere -> THREE.IcosahedronGeometry(80, 1) 1-4
 const ico = new THREE.Mesh(new THREE.IcosahedronGeometry(10,4), mat);
 ico.rotation.z = 0.5;
-three.group.add(ico); 
+three.group.add(ico);
 
 
 
@@ -111,7 +111,7 @@ function update() {
     const r = noise.perlin3(f(p.x), f(p.y), f(p.z)) * 4 + 20;
     p.multiplyScalar(r);
   });
-  
+
   ico.geometry.verticesNeedUpdate = true;
 
   three.group.rotation.y += 0.0001;
