@@ -1,5 +1,5 @@
 class ThreeController {
-  contructor(containerId) {
+  constructor(containerId) {
     this.container = document.getElementById(containerId)
     this.renderer = new THREE.WebGLRenderer({ antialias: true })
     this.scene = new THREE.Scene()
