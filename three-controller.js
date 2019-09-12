@@ -8,7 +8,7 @@ class ThreeController {
     // window.innerWidth = 1920
     // window.innerHeight = 1080
   
-    this.render.setSize(window.innerWidth, window.innerHeight)
+    this.renderer.setSize(window.innerWidth, window.innerHeight)
     this.container.append(this.render.domElement)
   
     this.camera = new THREE.PerspectiveCamera(

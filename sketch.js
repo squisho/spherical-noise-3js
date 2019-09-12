@@ -22,37 +22,37 @@ const planeGeometry = new THREE.PlaneGeometry(800, 800, 40, 40);
 // IcoSphere -> THREE.IcosahedronGeometry(80, 1) 1-4
 const ico = new THREE.Mesh(new THREE.IcosahedronGeometry(10,4), mat);
 ico.rotation.z = 0.5;
-group.add(ico);
+three.group.add(ico);
 
 // Planes
 const plane = new THREE.Mesh(planeGeometry, planeMat);
 plane.rotation.x = -0.5 * Math.PI;
 plane.position.set(0, 30, 0);
-group.add(plane);
+three.group.add(plane);
 
 const plane2 = new THREE.Mesh(planeGeometry, planeMat);
 plane2.rotation.x = -0.5 * Math.PI;
 plane2.position.set(0, -30, 0);
-group.add(plane2);
+three.group.add(plane2);
 
-scene.add(group);
+three.scene.add(three.group);
 
 
 // Lights
 
 const ambientLight = new THREE.AmbientLight(0xaaaaaa);
-  scene.add(ambientLight);
+  three.scene.add(ambientLight);
 
 const spotLight = new THREE.SpotLight(0xffffff);
   spotLight.intensity = 0.9;
   spotLight.position.set(-10, 40, 20);
   spotLight.lookAt(ico);
   spotLight.castShadow = true;
-  scene.add(spotLight);
+  three.scene.add(spotLight);
 
 // // Listener
 // const listener = new THREE.AudioListener();
-// camera.add(listener);
+// three.camera.add(listener);
 // //
 // // create global audio source
 // const audio = new THREE.Audio( listener );
@@ -68,18 +68,17 @@ function handleSuccess( stream ) {
 
 function initAnalyzer(stream){
 
-    const audioContext = new AudioContext();
-    // set audio source to input stream from microphone (Web Audio API https://developer.mozilla.org/en-US/docs/Web/API/MediaStreamAudioSourceNode)
-    const source = audioContext.createMediaStreamSource(stream);
-    source.connect(audioContext.destination);
+  const audioContext = new AudioContext();
+  // set audio source to input stream from microphone (Web Audio API https://developer.mozilla.org/en-US/docs/Web/API/MediaStreamAudioSourceNode)
+  const source = audioContext.createMediaStreamSource(stream);
+  source.connect(audioContext.destination);
 
   analyzer = Meyda.createMeydaAnalyzer({
-   "audioContext": audioContext,
-   "source": source,
-   "bufferSize": bufferSize,
-   "featureExtractors": ["rms", "energy"],
-   "callback": features => {
-   }
+    "audioContext": audioContext,
+    "source": source,
+    "bufferSize": bufferSize,
+    "featureExtractors": ["rms", "energy"],
+    "callback": features => null
   });
   analyzer.start();
 
@@ -113,7 +112,7 @@ function update(){
    });
    ico.geometry.verticesNeedUpdate = true;
 
-   group.rotation.y += 0.0001;
+   three.group.rotation.y += 0.0001;
 
    offset += 0.005;
 }
@@ -124,7 +123,7 @@ function render() {
   makeRoughGround(plane, 5);
   makeRoughGround(plane2, 5);
   update();
-  renderer.render(scene, camera);
+  three.renderer.render(three.scene, three.camera);
 }
 
 render();
