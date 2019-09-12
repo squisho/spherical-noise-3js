@@ -41,14 +41,14 @@ three.scene.add(three.group);
 // Lights
 
 const ambientLight = new THREE.AmbientLight(0xaaaaaa);
-  three.scene.add(ambientLight);
+three.scene.add(ambientLight);
 
 const spotLight = new THREE.SpotLight(0xffffff);
-  spotLight.intensity = 0.9;
-  spotLight.position.set(-10, 40, 20);
-  spotLight.lookAt(ico);
-  spotLight.castShadow = true;
-  three.scene.add(spotLight);
+spotLight.intensity = 0.9;
+spotLight.position.set(-10, 40, 20);
+spotLight.lookAt(ico);
+spotLight.castShadow = true;
+three.scene.add(spotLight);
 
 // // Listener
 // const listener = new THREE.AudioListener();
