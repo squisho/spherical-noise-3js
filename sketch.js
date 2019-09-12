@@ -17,12 +17,17 @@ const planeMat = new THREE.MeshLambertMaterial({
   side: THREE.DoubleSide,
   wireframe: true,
 });
+
 const planeGeometry = new THREE.PlaneGeometry(800, 800, 40, 40);
+
+
 
 // IcoSphere -> THREE.IcosahedronGeometry(80, 1) 1-4
 const ico = new THREE.Mesh(new THREE.IcosahedronGeometry(10,4), mat);
 ico.rotation.z = 0.5;
-three.group.add(ico);
+three.group.add(ico); 
+
+
 
 // Planes
 const plane = new THREE.Mesh(planeGeometry, planeMat);
@@ -38,6 +43,7 @@ three.group.add(plane2);
 three.scene.add(three.group);
 
 
+
 // Lights
 
 const ambientLight = new THREE.AmbientLight(0xaaaaaa);
@@ -46,28 +52,23 @@ three.scene.add(ambientLight);
 const spotLight = new THREE.SpotLight(0xffffff);
 spotLight.intensity = 0.9;
 spotLight.position.set(-10, 40, 20);
-spotLight.lookAt(ico);
 spotLight.castShadow = true;
 three.scene.add(spotLight);
 
+
+
 // // Listener
-// const listener = new THREE.AudioListener();
-// three.camera.add(listener);
-// //
-// // create global audio source
-// const audio = new THREE.Audio( listener );
 const bufferSize = 256;
 let analyzer;
-//
-// Init mic input
-navigator.mediaDevices.getUserMedia( { audio: true, video: false } ).then( handleSuccess );
 
-function handleSuccess( stream ) {
-  if (!analyzer) initAnalyzer(stream);
-}
+// The navigator object contains information about the browser.
+// this async call initializes audio input from the user
+navigator.mediaDevices.getUserMedia({ audio: true, video: false }).then(stream => {
+  if (!analyzer) initAnalyzer(stream)
+})
+
 
 function initAnalyzer(stream) {
-
   const audioContext = new AudioContext();
   // set audio source to input stream from microphone (Web Audio API https://developer.mozilla.org/en-US/docs/Web/API/MediaStreamAudioSourceNode)
   const source = audioContext.createMediaStreamSource(stream);
@@ -80,15 +81,12 @@ function initAnalyzer(stream) {
     "callback": features => null
   });
   analyzer.start();
-
 }
 
 noise.seed(Math.random());
 
 let originalVertices;
 let offset = 0;
-
-const f = n => n * 2 + offset;
 
 function getSoundData(soundData) {
   return {
@@ -105,11 +103,15 @@ function update() {
   console.log(soundData);
 
   if (!originalVertices) originalVertices = ico.geometry.vertices;
+
+  const f = n => n * 2 + offset;
+
   ico.geometry.vertices.forEach((vertex, i) => {
     const p = vertex.normalize();
     const r = noise.perlin3(f(p.x), f(p.y), f(p.z)) * 4 + 20;
     p.multiplyScalar(r);
   });
+  
   ico.geometry.verticesNeedUpdate = true;
 
   three.group.rotation.y += 0.0001;
