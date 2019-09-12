@@ -1,28 +1,7 @@
-var $container = document.getElementById("container");
-var renderer = new THREE.WebGLRenderer({antialias: true});
-var scene = new THREE.Scene();
-var group = new THREE.Group();
-
-window.innerWidth = 1920;
-window.innerHeight = 1080;
-
-renderer.setSize(window.innerWidth, window.innerHeight);
-$container.append(renderer.domElement);
-
-var camera = new THREE.PerspectiveCamera(67.5, window.innerWidth / window.innerHeight, 0.5, 10000 );
-camera.lookAt(scene.position);
-scene.add(camera);
-
-///////////////////////////////////////////////
-
-// Camera
-camera.position.z = 75;
-
-
-const controls = new THREE.OrbitControls(camera, renderer.domElement);
+const three = new ThreeController('container')
 
 // Materials
-var mat = new THREE.MeshLambertMaterial({
+const mat = new THREE.MeshLambertMaterial({
   color      :  0xaa90dd,
   wireframe  :  true,
   // emissive   :  new THREE.Color("rgb(255,255,255)"),
@@ -33,25 +12,25 @@ var mat = new THREE.MeshLambertMaterial({
   // opacity    : 1
 });
 
-var planeMat = new THREE.MeshLambertMaterial({
+const planeMat = new THREE.MeshLambertMaterial({
   color: 0xffffff,
   side: THREE.DoubleSide,
   wireframe: true,
 });
-var planeGeometry = new THREE.PlaneGeometry(800, 800, 40, 40);
+const planeGeometry = new THREE.PlaneGeometry(800, 800, 40, 40);
 
 // IcoSphere -> THREE.IcosahedronGeometry(80, 1) 1-4
-var ico = new THREE.Mesh(new THREE.IcosahedronGeometry(10,4), mat);
+const ico = new THREE.Mesh(new THREE.IcosahedronGeometry(10,4), mat);
 ico.rotation.z = 0.5;
 group.add(ico);
 
 // Planes
-var plane = new THREE.Mesh(planeGeometry, planeMat);
+const plane = new THREE.Mesh(planeGeometry, planeMat);
 plane.rotation.x = -0.5 * Math.PI;
 plane.position.set(0, 30, 0);
 group.add(plane);
 
-var plane2 = new THREE.Mesh(planeGeometry, planeMat);
+const plane2 = new THREE.Mesh(planeGeometry, planeMat);
 plane2.rotation.x = -0.5 * Math.PI;
 plane2.position.set(0, -30, 0);
 group.add(plane2);
@@ -61,10 +40,10 @@ scene.add(group);
 
 // Lights
 
-var ambientLight = new THREE.AmbientLight(0xaaaaaa);
+const ambientLight = new THREE.AmbientLight(0xaaaaaa);
   scene.add(ambientLight);
 
-var spotLight = new THREE.SpotLight(0xffffff);
+const spotLight = new THREE.SpotLight(0xffffff);
   spotLight.intensity = 0.9;
   spotLight.position.set(-10, 40, 20);
   spotLight.lookAt(ico);
@@ -72,13 +51,13 @@ var spotLight = new THREE.SpotLight(0xffffff);
   scene.add(spotLight);
 
 // // Listener
-// var listener = new THREE.AudioListener();
+// const listener = new THREE.AudioListener();
 // camera.add(listener);
 // //
 // // create global audio source
-// var audio = new THREE.Audio( listener );
-var bufferSize = 256;
-var analyzer;
+// const audio = new THREE.Audio( listener );
+const bufferSize = 256;
+let analyzer;
 //
 // Init mic input
 navigator.mediaDevices.getUserMedia( { audio: true, video: false } ).then( handleSuccess );
@@ -89,9 +68,9 @@ function handleSuccess( stream ) {
 
 function initAnalyzer(stream){
 
-    var audioContext = new AudioContext();
+    const audioContext = new AudioContext();
     // set audio source to input stream from microphone (Web Audio API https://developer.mozilla.org/en-US/docs/Web/API/MediaStreamAudioSourceNode)
-    var source = audioContext.createMediaStreamSource(stream);
+    const source = audioContext.createMediaStreamSource(stream);
     source.connect(audioContext.destination);
 
   analyzer = Meyda.createMeydaAnalyzer({
@@ -122,7 +101,7 @@ function getSoundData(soundData){
 function update(){
    // ico.rotation.x+=2/100;
    // ico.rotation.y+=2/100;
-   var soundData;
+   let soundData;
    if (analyzer) soundData = getSoundData(soundData);
    console.log(soundData);
 
@@ -153,9 +132,9 @@ render();
 
 function makeRoughGround(mesh, distortionFr) {
     mesh.geometry.vertices.forEach(function (vertex, i) {
-        var amp = 2;
-        var time = Date.now();
-        var distance = (noise.perlin3(vertex.x + time * 0.0003, vertex.y + time * 0.0001, time * 0.0001) + 0) * distortionFr * amp;
+        const amp = 2;
+        const time = Date.now();
+        const distance = (noise.perlin3(vertex.x + time * 0.0003, vertex.y + time * 0.0001, time * 0.0001) + 0) * distortionFr * amp;
         vertex.z = distance;
     });
     mesh.geometry.verticesNeedUpdate = true;
