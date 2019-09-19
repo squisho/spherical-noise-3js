@@ -18,3 +18,5 @@ function avg(arr){
 function max(arr){
     return arr.reduce(function(a, b){ return Math.max(a, b); })
 }
+
+const noNaN = (number, dflt=0) => isNaN(number) ? dflt : number

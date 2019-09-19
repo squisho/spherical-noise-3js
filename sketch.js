@@ -1,106 +1,28 @@
+const EXTRACTORS = [ 'amplitudeSpectrum', 'spectralFlatness', 'loudness', 'spectralKurtosis' ]
+
 const three = new ThreeController('container')
-
-// Materials
-const mat = new THREE.MeshLambertMaterial({
-  color      :  0xaa90dd,
-  wireframe  :  true,
-  // emissive   :  new THREE.Color("rgb(255,255,255)"),
-  // specular   :  new THREE.Color("rgb(255,255,255)"),
-  // shininess  :  10,
-  // // shading    :  THREE.FlatShading,
-  // transparent: 1,
-  // opacity    : 1
-});
-
-const planeMat = new THREE.MeshLambertMaterial({
-  color: 0xffffff,
-  side: THREE.DoubleSide,
-  wireframe: true,
-});
-
-const planeGeometry = new THREE.PlaneGeometry(800, 800, 40, 40);
-
-
-
-// IcoSphere -> THREE.IcosahedronGeometry(80, 1) 1-4
-const ico = new THREE.Mesh(new THREE.IcosahedronGeometry(10,4), mat);
-ico.rotation.z = 0.5;
-three.group.add(ico); 
-
-
-
-// Planes
-const plane = new THREE.Mesh(planeGeometry, planeMat);
-plane.rotation.x = -0.5 * Math.PI;
-plane.position.set(0, 30, 0);
-three.group.add(plane);
-
-const plane2 = new THREE.Mesh(planeGeometry, planeMat);
-plane2.rotation.x = -0.5 * Math.PI;
-plane2.position.set(0, -30, 0);
-three.group.add(plane2);
-
-three.scene.add(three.group);
-
-
-
-// Lights
-
-const ambientLight = new THREE.AmbientLight(0xaaaaaa);
-three.scene.add(ambientLight);
-
-const spotLight = new THREE.SpotLight(0xffffff);
-spotLight.intensity = 0.9;
-spotLight.position.set(-10, 40, 20);
-spotLight.castShadow = true;
-three.scene.add(spotLight);
-
-
+const materials = three.createMaterials()
+const ico = three.createIco({ radius: 10, detail: 5 })
+const { topPlane, bottomPlane } = three.createPlanes()
+three.scene.add(three.group)
+three.createLights()
 
 // // Listener
-const bufferSize = 256;
-let analyzer;
+let originalVertices
+let offset = 0
+noise.seed(Math.random())
 
-// The navigator object contains information about the browser.
-// this async call initializes audio input from the user
-// navigator.mediaDevices.enumerateDevices().then(devices => {
-//   const device = devices[6] // sound card output
-//   navigator.mediaDevices.getUserMedia({ audio: device, video: false }).then(stream => {
-//     if (!analyzer) initAnalyzer(stream)
-//   })
-// })
-navigator.mediaDevices.getUserMedia({ audio: true, video: false }).then(initAnalyzer)
+setupAnalyzer(EXTRACTORS).then(analyzer => {
+  const render = () => {
+    requestAnimationFrame(render)
+    update(analyzer)
+    three.renderer.render(three.scene, three.camera)
+  }
 
-function initAnalyzer(stream) {
-  const audioContext = new AudioContext();
-  // set audio source to input stream from microphone (Web Audio API https://developer.mozilla.org/en-US/docs/Web/API/MediaStreamAudioSourceNode)
-  const source = audioContext.createMediaStreamSource(stream);
+  render()
+})
 
-  analyzer = Meyda.createMeydaAnalyzer({
-    audioContext: audioContext,
-    source: source,
-    bufferSize: bufferSize,
-    featureExtractors: [ 'amplitudeSpectrum', 'spectralFlatness', 'loudness', 'spectralKurtosis' ], // ["rms", "energy"],
-    callback: features => null
-  });
-  analyzer.start();
-}
-
-noise.seed(Math.random());
-
-let originalVertices;
-let offset = 0;
-
-function getSoundData(soundData) {
-  return {
-    "rms": analyzer.get('rms'),
-    "energy": analyzer.get('energy')
-  };
-}
-
-const noNaN = (number, dflt=0) => isNaN(number) ? dflt : number
-
-function update() {
+function update(analyzer) {
   if (!analyzer) return
 
   // ico.rotation.x+=2/100;
@@ -123,8 +45,8 @@ function update() {
   const upperMaxFr = upperMax / upperHalfArray.length
   const upperAvgFr = upperAvg / upperHalfArray.length
 
-  makeRoughGround(plane, modulate(upperAvgFr, 0, 1, 5, 25));
-  makeRoughGround(plane2, modulate(lowerMaxFr, 0, 1, 5, 25));
+  makeRoughGround(three.objects.topPlane, modulate(upperAvgFr, 0, 1, 5, 25));
+  makeRoughGround(three.objects.bottomPlane, modulate(lowerMaxFr, 0, 1, 5, 25));
 
   const pow = Math.pow(lowerMaxFr, 0.8)
 
@@ -134,7 +56,7 @@ function update() {
   const size = noNaN(modulate(loudness, 0, 24, 0.1, 5), 1)
   const roughness = noNaN(modulate(flatness, 0, 1, 1, 2), 1) * size / 2
 
-  makeRoughBall(ico, size, roughness)
+  makeRoughBall(three.objects.ico, size, roughness)
 
   // makeRoughBall(ico, modulate(pow, 0, 1, 0.00001, 10), modulate(upperAvgFr, 0, 1, 1, 10));
 
@@ -143,41 +65,6 @@ function update() {
   let delta = noNaN(modulate(flatness, 0.0, 1.0, 0.0003, 0.03), 0.0003)
   offset += delta // 0.005;
 }
-
-// function update() {
-//   // ico.rotation.x+=2/100;
-//   // ico.rotation.y+=2/100;
-//   let soundData;
-//   if (analyzer) soundData = getSoundData(soundData);
-
-//   if (!originalVertices) originalVertices = ico.geometry.vertices;
-
-//   const f = n => n * 2 + offset;
-
-//   ico.geometry.vertices.forEach((vertex, i) => {
-//     const p = vertex.normalize();
-//     const r = noise.perlin3(f(p.x), f(p.y), f(p.z)) * 4 + 20;
-//     p.multiplyScalar(r);
-//   });
-
-//   ico.geometry.verticesNeedUpdate = true;
-
-//   three.group.rotation.y += 0.0001;
-
-//   offset += 0.005;
-// }
-
-// Render
-function render() {
-  requestAnimationFrame(render);
-  // makeRoughGround(plane, 5);
-  // makeRoughGround(plane2, 5);
-  update();
-  three.renderer.render(three.scene, three.camera);
-}
-
-render();
-
 
 function makeRoughBall(mesh, bassFr, treFr) {
   mesh.geometry.vertices.forEach((vertex, i) => {
