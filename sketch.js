@@ -63,10 +63,13 @@ let analyzer;
 
 // The navigator object contains information about the browser.
 // this async call initializes audio input from the user
-navigator.mediaDevices.getUserMedia({ audio: true, video: false }).then(stream => {
-  if (!analyzer) initAnalyzer(stream)
-})
-
+// navigator.mediaDevices.enumerateDevices().then(devices => {
+//   const device = devices[6] // sound card output
+//   navigator.mediaDevices.getUserMedia({ audio: device, video: false }).then(stream => {
+//     if (!analyzer) initAnalyzer(stream)
+//   })
+// })
+navigator.mediaDevices.getUserMedia({ audio: true, video: false }).then(initAnalyzer)
 
 function initAnalyzer(stream) {
   const audioContext = new AudioContext();
@@ -77,7 +80,7 @@ function initAnalyzer(stream) {
     audioContext: audioContext,
     source: source,
     bufferSize: bufferSize,
-    featureExtractors: [ 'amplitudeSpectrum', 'spectralFlatness' ], // ["rms", "energy"],
+    featureExtractors: [ 'amplitudeSpectrum', 'spectralFlatness', 'loudness', 'spectralKurtosis' ], // ["rms", "energy"],
     callback: features => null
   });
   analyzer.start();
@@ -94,6 +97,8 @@ function getSoundData(soundData) {
     "energy": analyzer.get('energy')
   };
 }
+
+const noNaN = (number, dflt=0) => isNaN(number) ? dflt : number
 
 function update() {
   if (!analyzer) return
@@ -123,13 +128,19 @@ function update() {
 
   const pow = Math.pow(lowerMaxFr, 0.8)
 
-  makeRoughBall(ico, modulate(pow, 0, 1, 1, 9), modulate(upperAvgFr, 0, 1, 1, 10));
+  const flatness = analyzer.get('spectralFlatness')
+  const loudness = analyzer.get('loudness').total
+
+  const size = noNaN(modulate(loudness, 0, 24, 0.1, 5), 1)
+  const roughness = noNaN(modulate(flatness, 0, 1, 1, 2), 1) * size / 2
+
+  makeRoughBall(ico, size, roughness)
+
+  // makeRoughBall(ico, modulate(pow, 0, 1, 0.00001, 10), modulate(upperAvgFr, 0, 1, 1, 10));
 
   three.group.rotation.y += 0.005
   
-  const r = analyzer.get('spectralFlatness')
-  let delta = modulate(r, 0.0, 1.0, 0.0005, 0.05)
-  if (isNaN(delta)) delta = 0.0005
+  let delta = noNaN(modulate(flatness, 0.0, 1.0, 0.0003, 0.03), 0.0003)
   offset += delta // 0.005;
 }
 
@@ -175,11 +186,12 @@ function makeRoughBall(mesh, bassFr, treFr) {
       const time = window.performance.now();
       vertex.normalize();
       const rf = time * 0.00001 + offset;
-      const distance = (localOffset + bassFr) + noise.perlin3(
+      let distance = (localOffset + bassFr) + noise.perlin3(
         vertex.x + rf * 7, 
         vertex.y + rf * 8, 
         vertex.z + rf * 9
       ) * amp * treFr;
+      if (distance < 0.001) distance = 0.001
       vertex.multiplyScalar(distance);
   });
   mesh.geometry.verticesNeedUpdate = true;
