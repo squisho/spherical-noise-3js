@@ -77,7 +77,7 @@ function initAnalyzer(stream) {
     audioContext: audioContext,
     source: source,
     bufferSize: bufferSize,
-    featureExtractors: [ 'amplitudeSpectrum' ], // ["rms", "energy"],
+    featureExtractors: [ 'amplitudeSpectrum', 'spectralFlatness' ], // ["rms", "energy"],
     callback: features => null
   });
   analyzer.start();
@@ -123,10 +123,14 @@ function update() {
 
   const pow = Math.pow(lowerMaxFr, 0.8)
 
-  makeRoughBall(ico, modulate(pow, 0, 1, 1, 9), modulate(upperAvgFr, 0, 1, 1, 25));
+  makeRoughBall(ico, modulate(pow, 0, 1, 1, 9), modulate(upperAvgFr, 0, 1, 1, 10));
 
   three.group.rotation.y += 0.005
-  offset += 0.005;
+  
+  const r = analyzer.get('spectralFlatness')
+  let delta = modulate(r, 0.0, 1.0, 0.0005, 0.05)
+  if (isNaN(delta)) delta = 0.0005
+  offset += delta // 0.005;
 }
 
 // function update() {
@@ -166,12 +170,12 @@ render();
 
 function makeRoughBall(mesh, bassFr, treFr) {
   mesh.geometry.vertices.forEach((vertex, i) => {
-      const offset = mesh.geometry.parameters.radius;
+      const localOffset = mesh.geometry.parameters.radius;
       const amp = 7;
       const time = window.performance.now();
       vertex.normalize();
-      const rf = time * 0.00001;
-      const distance = (offset + bassFr) + noise.perlin3(
+      const rf = time * 0.00001 + offset;
+      const distance = (localOffset + bassFr) + noise.perlin3(
         vertex.x + rf * 7, 
         vertex.y + rf * 8, 
         vertex.z + rf * 9
@@ -189,7 +193,7 @@ function makeRoughGround(mesh, distortionFr) {
   mesh.geometry.vertices.forEach(function (vertex, i) {
     const amp = 2;
     const time = Date.now();
-    const distance = (noise.perlin2(vertex.x + time * 0.0003, vertex.y + time * 0.0001) + 0) * distortionFr * amp;
+    const distance = (noise.perlin2(vertex.x + time * 0.0003 + offset, vertex.y + time * 0.0001 + offset) + 0) * distortionFr * amp;
     vertex.z = distance;
   });
   mesh.geometry.verticesNeedUpdate = true;
