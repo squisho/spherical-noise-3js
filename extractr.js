@@ -9,18 +9,19 @@
 
 class Extractr {
   constructor(features, alphas) {
-    this.features = features 
+    this.features = features
     this.avgs = features.reduce((acc, cur) => ({ ...acc, [cur]: 0 }), {})
     this.alphas = features.reduce((acc, cur, i) => ({ ...acc, [cur]: alphas ? alphas[i] : 0.7 }), {})
   }
 
   setup = async () => {
-    const stream = await navigator.mediaDevices.getUserMedia({ 
-      audio: true, video: false 
+    const stream = await navigator.mediaDevices.getUserMedia({
+      audio: true,
+      video: false,
     })
-    
+
     const audioContext = new AudioContext()
-    // set audio source to input stream from microphone 
+    // set audio source to input stream from microphone
     // (Web Audio API https://developer.mozilla.org/en-US/docs/Web/API/MediaStreamAudioSourceNode)
     const source = audioContext.createMediaStreamSource(stream)
 
@@ -29,7 +30,7 @@ class Extractr {
       source: source,
       bufferSize: 256,
       featureExtractors: this.features,
-      callback: () => null
+      callback: () => null,
     })
 
     this.analyzer.start()
@@ -53,11 +54,11 @@ class Extractr {
     const lowerHalfArray = soundData.slice(0, soundData.length / 2 - 1)
     const upperHalfArray = soundData.slice(soundData.length / 2, soundData.length - 1)
 
-    const overallAvg  = avg(soundData)
-    const lowerMax    = max(lowerHalfArray)
-    const lowerAvg    = avg(lowerHalfArray)
-    const upperMax    = max(upperHalfArray)
-    const upperAvg    = avg(upperHalfArray)
+    const overallAvg = avg(soundData)
+    const lowerMax = max(lowerHalfArray)
+    const lowerAvg = avg(lowerHalfArray)
+    const upperMax = max(upperHalfArray)
+    const upperAvg = avg(upperHalfArray)
 
     const lowerMaxFr = lowerMax / lowerHalfArray.length
     const lowerAvgFr = lowerAvg / lowerHalfArray.length

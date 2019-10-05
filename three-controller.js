@@ -4,18 +4,16 @@ class ThreeController {
     this.renderer = new THREE.WebGLRenderer({ antialias: true })
     this.scene = new THREE.Scene()
     this.group = new THREE.Group()
-  
+
     this.renderer.setSize(window.innerWidth, window.innerHeight)
     this.container.append(this.renderer.domElement)
-  
-    this.camera = new THREE.PerspectiveCamera(
-      67.5, window.innerWidth / window.innerHeight, 0.5, 10000
-    )
+
+    this.camera = new THREE.PerspectiveCamera(67.5, window.innerWidth / window.innerHeight, 0.5, 10000)
     this.camera.lookAt(this.scene.position)
     this.scene.add(this.camera)
-  
+
     this.camera.position.z = 75
-  
+
     this.controls = new THREE.OrbitControls(this.camera, this.renderer.domElement)
 
     this.objects = {}
@@ -25,7 +23,7 @@ class ThreeController {
   createMaterials = () => {
     this.materials = {
       sphere: new THREE.MeshPhongMaterial({
-        color:  0xaa90dd,
+        color: 0xaa90dd,
         // reflectivity:  100,
         // shading:  THREE.FlatShading,
         // wireframe: true,
@@ -38,7 +36,7 @@ class ThreeController {
         wireframe: true,
       }),
     }
-    
+
     return this.materials
   }
 
@@ -46,7 +44,7 @@ class ThreeController {
     this.objects.ico = new THREE.Mesh(new THREE.IcosahedronGeometry(radius, detail), this.materials.sphere)
     this.objects.ico.rotation.z = 0.5
     this.group.add(this.objects.ico)
-    
+
     return this.objects.ico
   }
 
@@ -55,7 +53,7 @@ class ThreeController {
     const plane = new THREE.Mesh(planeGeometry, this.materials.plane)
     plane.rotation.x = -0.5 * Math.PI
     plane.position.set(x, y, z)
-    
+
     return plane
   }
 
@@ -64,7 +62,7 @@ class ThreeController {
     this.objects.bottomPlane = this.createPlane(0, -30, 0)
     this.group.add(this.objects.topPlane)
     this.group.add(this.objects.bottomPlane)
-    
+
     return this.objects
   }
 
