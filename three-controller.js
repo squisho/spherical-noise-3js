@@ -33,16 +33,17 @@ class ThreeController {
   createMaterials = () => {
     this.materials = {
       plane: new THREE.MeshPhongMaterial({
-        color: 0xffffff,
+        color: 0x22aa99,
         side: THREE.DoubleSide,
-        reflectivity: 1,
+        reflectivity: 100,
         shininess: 1000,
         wireframe: true,
+        shading: THREE.FlatShading,
       }),
       sphere: new THREE.MeshPhongMaterial({
         color: 0xaa90dd,
-        // reflectivity:  100,
-        // shading:  THREE.FlatShading,
+        reflectivity:  100,
+        shading:  THREE.FlatShading,
         // wireframe: true,
       }),
     }
@@ -50,10 +51,21 @@ class ThreeController {
     return this.materials
   }
 
+  removeObject = object => {
+    const selectedObject = this.scene.getObjectByName(object.name);
+    this.scene.remove(selectedObject);
+  }
+
+  createIcoGeometry = (radius, detail) => new THREE.IcosahedronGeometry(radius, detail)
+
   createIco = ({ detail, material=this.materials.sphere, radius }) => {
-    this.objects.ico = new THREE.Mesh(new THREE.IcosahedronGeometry(radius, detail), material)
-    this.objects.ico.rotation.z = 0.5
-    this.group.add(this.objects.ico)
+    const ico = new THREE.Mesh(this.createIcoGeometry(radius, detail), material)
+    ico.rotation.z = 0.5
+    ico.name = 'sphere'
+    ico.castShadow = true
+
+    this.group.add(ico)
+    this.objects.ico = ico
 
     return this.objects.ico
   }
@@ -88,7 +100,7 @@ class ThreeController {
     lights.spotLight.castShadow = true
     three.scene.add(lights.spotLight)
 
-    const sphere = new THREE.SphereBufferGeometry(0.01, 16, 8)
+    const sphere = new THREE.SphereBufferGeometry(1, 16, 8)
 
     lights.rotating = []
     const light1 = new THREE.PointLight(0xff0040, 2, 50)

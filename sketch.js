@@ -1,16 +1,22 @@
 const FEATURES = ['amplitudeSpectrum', 'spectralFlatness', 'loudness', 'spectralKurtosis']
 
+let originalVertices
+let offset = 0
+noise.seed(Math.random())
+
 const three = new ThreeController('container')
 const materials = three.createMaterials()
-const ico = three.createIco({ detail: 5, radius: 10 })
+let ico = three.createIco({ detail: 5, radius: 10 })
 const { topPlane, bottomPlane } = three.createPlanes()
 three.scene.add(three.group)
 three.createLights()
 
-// // Listener
-let originalVertices
-let offset = 0
-noise.seed(Math.random())
+const gui = new dat.GUI({ height : 5 * 32 - 1 })
+gui.add({ detail: 5 }, 'detail').min(0).max(5).step(1).onFinishChange(value => {
+  const old = ico.geometry
+  ico.geometry = three.createIcoGeometry(10, value)
+  old.dispose()
+})
 
 main()
 
