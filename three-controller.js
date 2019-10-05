@@ -4,6 +4,7 @@ class ThreeController {
     this.renderer = new THREE.WebGLRenderer({ antialias: true })
     this.scene = new THREE.Scene()
     this.group = new THREE.Group()
+    this.clock = new THREE.Clock()
 
     this.renderer.setPixelRatio(window.devicePixelRatio)
     this.renderer.setSize(window.innerWidth, window.innerHeight)
@@ -76,14 +77,41 @@ class ThreeController {
   }
 
   createLights = () => {
-    this.lights.ambientLight = new THREE.AmbientLight(0xaaaaaa)
-    this.scene.add(this.lights.ambientLight)
+    const lights = {}
 
-    this.lights.spotLight = new THREE.SpotLight(0xffffff)
-    this.lights.spotLight.intensity = 0.9
-    this.lights.spotLight.position.set(-10, 40, 20)
-    this.lights.spotLight.castShadow = true
-    three.scene.add(this.lights.spotLight)
+    lights.ambientLight = new THREE.AmbientLight(0xaaaaaa)
+    this.scene.add(lights.ambientLight)
+
+    lights.spotLight = new THREE.SpotLight(0xffffff)
+    lights.spotLight.intensity = 0.3
+    lights.spotLight.position.set(-10, 40, 20)
+    lights.spotLight.castShadow = true
+    three.scene.add(lights.spotLight)
+
+    const sphere = new THREE.SphereBufferGeometry(0.01, 16, 8)
+
+    lights.rotating = []
+    const light1 = new THREE.PointLight(0xff0040, 2, 50)
+    light1.add(new THREE.Mesh(sphere, new THREE.MeshBasicMaterial({ color: 0xff0040 } )))
+    this.scene.add(light1)
+    lights.rotating.push(light1)
+
+    const light2 = new THREE.PointLight(0x0040ff, 2, 50)
+    light2.add(new THREE.Mesh( sphere, new THREE.MeshBasicMaterial({ color: 0x0040ff } )))
+    this.scene.add(light2)
+    lights.rotating.push(light2)
+
+    const light3 = new THREE.PointLight(0x80ff80, 2, 50)
+    light3.add(new THREE.Mesh(sphere, new THREE.MeshBasicMaterial({ color: 0x80ff80 } )))
+    this.scene.add(light3)
+    lights.rotating.push(light3)
+
+    const light4 = new THREE.PointLight(0xffaa00, 2, 50)
+    light4.add(new THREE.Mesh( sphere, new THREE.MeshBasicMaterial({ color: 0xffaa00 } )))
+    this.scene.add(light4)
+    lights.rotating.push(light4)
+
+    this.lights = lights
 
     return this.lights
   }

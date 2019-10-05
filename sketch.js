@@ -12,11 +12,10 @@ let originalVertices
 let offset = 0
 noise.seed(Math.random())
 
-const ext = new Extractr(FEATURES)
-
 main()
 
 async function main() {
+  const ext = new Extractr(FEATURES)
   await ext.setup()
 
   const render = () => {
@@ -54,6 +53,8 @@ function update(ext) {
 
   let delta = nodulate(flatness, 0.0, 1.0, 0.002, 0.01, 0.001)
   offset += delta // 0.005;
+
+  updateLights()
 }
 
 function makeRoughBall(mesh, shift, scale) {
@@ -90,4 +91,25 @@ function makeRoughGround(mesh, distortionFr) {
   mesh.geometry.normalsNeedUpdate = true
   mesh.geometry.computeVertexNormals()
   mesh.geometry.computeFaceNormals()
+}
+
+function updateLights() {
+  const time = Date.now() * 0.0005;
+  const delta = three.clock.getDelta();
+
+  three.lights.rotating[0].position.x = Math.sin(time * 0.7) * 30;
+  three.lights.rotating[0].position.y = Math.cos(time * 0.5) * 40;
+  three.lights.rotating[0].position.z = Math.cos(time * 0.3) * 30;
+  
+  three.lights.rotating[1].position.x = Math.cos(time * 0.3) * 30;
+  three.lights.rotating[1].position.y = Math.sin(time * 0.5) * 40;
+  three.lights.rotating[1].position.z = Math.sin(time * 0.7) * 30;
+  
+  three.lights.rotating[2].position.x = Math.sin(time * 0.7) * 30;
+  three.lights.rotating[2].position.y = Math.cos(time * 0.3) * 40;
+  three.lights.rotating[2].position.z = Math.sin(time * 0.5) * 30;
+  
+  three.lights.rotating[3].position.x = Math.sin(time * 0.3) * 30;
+  three.lights.rotating[3].position.y = Math.cos(time * 0.7) * 40;
+  three.lights.rotating[3].position.z = Math.sin(time * 0.5) * 30;
 }
