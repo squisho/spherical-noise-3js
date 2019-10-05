@@ -20,3 +20,5 @@ function max(arr){
 }
 
 const noNaN = (number, dflt=0) => isNaN(number) ? dflt : number
+
+const nodulate = (n, iMin, iMax, oMin, oMax, dflt) => noNaN(modulate(n, iMin, iMax, oMin, oMax), dflt)
