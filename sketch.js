@@ -2,7 +2,7 @@ const FEATURES = ['amplitudeSpectrum', 'spectralFlatness', 'loudness', 'spectral
 
 const three = new ThreeController('container')
 const materials = three.createMaterials()
-const ico = three.createIco({ radius: 10, detail: 5 })
+const ico = three.createIco({ detail: 5, radius: 10 })
 const { topPlane, bottomPlane } = three.createPlanes()
 three.scene.add(three.group)
 three.createLights()
@@ -34,8 +34,8 @@ function update(ext) {
   const stats = ext.spectrumStats()
   if (!stats) return
 
-  makeRoughGround(three.objects.topPlane, modulate(stats.upper.avgFr, 0, 1, 5, 25))
-  makeRoughGround(three.objects.bottomPlane, modulate(stats.lower.maxFr, 0, 1, 5, 25))
+  makeRoughGround(topPlane, modulate(stats.upper.avgFr, 0, 1, 5, 25))
+  makeRoughGround(bottomPlane, modulate(stats.lower.maxFr, 0, 1, 5, 25))
 
   const pow = Math.pow(stats.lower.maxFr, 0.8)
 
@@ -45,7 +45,7 @@ function update(ext) {
   const size = nodulate(loudness, 0, 24, 1, 5, 1)
   const roughness = (nodulate(flatness, 0, 1, 1, 2, 1) * size) / 2
 
-  makeRoughBall(three.objects.ico, size, roughness)
+  makeRoughBall(ico, size, roughness)
 
   // makeRoughBall(ico, modulate(pow, 0, 1, 0.00001, 10), modulate(upperAvgFr, 0, 1, 1, 10));
 

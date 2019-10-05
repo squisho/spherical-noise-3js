@@ -50,8 +50,8 @@ class ThreeController {
     return this.materials
   }
 
-  createIco = ({ radius, detail }) => {
-    this.objects.ico = new THREE.Mesh(new THREE.IcosahedronGeometry(radius, detail), this.materials.sphere)
+  createIco = ({ detail, material=this.materials.sphere, radius }) => {
+    this.objects.ico = new THREE.Mesh(new THREE.IcosahedronGeometry(radius, detail), material)
     this.objects.ico.rotation.z = 0.5
     this.group.add(this.objects.ico)
 
