@@ -5,6 +5,7 @@ class ThreeController {
     this.scene = new THREE.Scene()
     this.group = new THREE.Group()
 
+    this.renderer.setPixelRatio(window.devicePixelRatio)
     this.renderer.setSize(window.innerWidth, window.innerHeight)
     this.container.append(this.renderer.domElement)
 
@@ -16,24 +17,32 @@ class ThreeController {
 
     this.controls = new THREE.OrbitControls(this.camera, this.renderer.domElement)
 
+    window.addEventListener('resize', this.onWindowResize, false);
+
     this.objects = {}
     this.lights = {}
   }
 
+  onWindowResize = () => {
+    this.camera.aspect = window.innerWidth / window.innerHeight;
+    this.camera.updateProjectionMatrix();
+    this.renderer.setSize(window.innerWidth, window.innerHeight);
+  }
+
   createMaterials = () => {
     this.materials = {
-      sphere: new THREE.MeshPhongMaterial({
-        color: 0xaa90dd,
-        // reflectivity:  100,
-        // shading:  THREE.FlatShading,
-        // wireframe: true,
-      }),
       plane: new THREE.MeshPhongMaterial({
         color: 0xffffff,
         side: THREE.DoubleSide,
         reflectivity: 1,
         shininess: 1000,
         wireframe: true,
+      }),
+      sphere: new THREE.MeshPhongMaterial({
+        color: 0xaa90dd,
+        // reflectivity:  100,
+        // shading:  THREE.FlatShading,
+        // wireframe: true,
       }),
     }
 
