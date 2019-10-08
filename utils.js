@@ -30,4 +30,9 @@ const h2x = c => c.replace('#', '0x')
 
 const x2h = c => c.replace('0x', '#')
 
-const updateColor = (obj, c) => obj.color.setHex(h2x(c))
+const updateColor = (obj, c, rgb) => {
+  if (rgb && typeof c === Array) obj.color.setRGB(...c)
+  else if (typeof c === Array) obj.color.setHSL(...c)
+  else if (typeof c === 'string') obj.color.setHex(h2x(c))
+  else obj.color.set(c)
+}

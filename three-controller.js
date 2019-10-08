@@ -102,26 +102,12 @@ class ThreeController {
 
     // const sphere = new THREE.SphereBufferGeometry(1, 16, 8)
 
-    lights.rotating = []
-    const light1 = new THREE.PointLight(0xff0040, 2, 50)
-    // light1.add(new THREE.Mesh(sphere, new THREE.MeshBasicMaterial({ color: 0xff0040 } )))
-    this.scene.add(light1)
-    lights.rotating.push(light1)
-
-    const light2 = new THREE.PointLight(0x0040ff, 2, 50)
-    // light2.add(new THREE.Mesh( sphere, new THREE.MeshBasicMaterial({ color: 0x0040ff } )))
-    this.scene.add(light2)
-    lights.rotating.push(light2)
-
-    const light3 = new THREE.PointLight(0x80ff80, 2, 50)
-    // light3.add(new THREE.Mesh(sphere, new THREE.MeshBasicMaterial({ color: 0x80ff80 } )))
-    this.scene.add(light3)
-    lights.rotating.push(light3)
-
-    const light4 = new THREE.PointLight(0xffaa00, 2, 50)
-    // light4.add(new THREE.Mesh( sphere, new THREE.MeshBasicMaterial({ color: 0xffaa00 } )))
-    this.scene.add(light4)
-    lights.rotating.push(light4)
+    lights.rotating = [0xff0040, 0x0040ff, 0x80ff80, 0xffaa00].map(color => {
+      const light = new THREE.PointLight(color, 2, 50)
+      // light.add(new THREE.Mesh(sphere, new THREE.MeshBasicMaterial({ color } )))
+      this.scene.add(light1)
+      return light
+    })
 
     this.lights = lights
 
