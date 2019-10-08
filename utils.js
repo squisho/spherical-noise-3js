@@ -25,3 +25,9 @@ function max(arr) {
 const noNaN = (number, dflt = 0) => (isNaN(number) ? dflt : number)
 
 const nodulate = (n, iMin, iMax, oMin, oMax, dflt) => noNaN(modulate(n, iMin, iMax, oMin, oMax), dflt)
+
+const h2x = c => c.replace('#', '0x')
+
+const x2h = c => c.replace('0x', '#')
+
+const updateColor = (obj, c) => obj.color.setHex(h2x(c))

@@ -1,4 +1,21 @@
-const FEATURES = ['amplitudeSpectrum', 'spectralFlatness', 'loudness', 'spectralKurtosis']
+const FEATURES = [
+  'rms',
+  'zcr',
+  'energy',
+  'amplitudeSpectrum',
+  'spectralCentroid',
+  'spectralFlatness',
+  'spectralSlope',
+  'spectralRolloff',
+  'spectralSpread',
+  'spectralSkewness',
+  'spectralKurtosis',
+  // 'chroma',
+  'loudness',
+  'perceptualSpread',
+  'perceptualSharpness',
+  'mfcc'
+]
 
 let originalVertices
 let offset = 0

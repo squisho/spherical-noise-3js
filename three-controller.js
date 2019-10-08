@@ -127,4 +127,24 @@ class ThreeController {
 
     return this.lights
   }
+
+  setIcoDetail = detail => {
+    const ico = this.objects.ico
+    const old = ico.geometry
+    ico.geometry = this.createIcoGeometry(10, detail)
+    old.dispose()
+  }
+
+  setIcoColor = c => updateColor(ico.material, c)
+
+  setPlanesColor = c => {
+    const planes = [this.objects.topPlane, this.objects.bottomPlane]
+    planes.forEach(plane => updateColor(plane.material, c))
+  }
+
+  setAmbientLightColor = c => updateColor(this.lights.ambient, c)
+
+  setSpotLightColor = c => updateColor(this.lights.spot, c)
+
+  updateRLight = i => c => updateColor(this.lights.rotating[i], c)
 }
