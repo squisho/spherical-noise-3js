@@ -91,35 +91,35 @@ class ThreeController {
   createLights = () => {
     const lights = {}
 
-    lights.ambientLight = new THREE.AmbientLight(0xaaaaaa)
-    this.scene.add(lights.ambientLight)
+    lights.ambient = new THREE.AmbientLight(0xaaaaaa)
+    this.scene.add(lights.ambient)
 
-    lights.spotLight = new THREE.SpotLight(0xffffff)
-    lights.spotLight.intensity = 0.3
-    lights.spotLight.position.set(-10, 40, 20)
-    lights.spotLight.castShadow = true
-    three.scene.add(lights.spotLight)
+    lights.spot = new THREE.SpotLight(0xffffff)
+    lights.spot.intensity = 0.3
+    lights.spot.position.set(-10, 40, 20)
+    lights.spot.castShadow = true
+    three.scene.add(lights.spot)
 
-    const sphere = new THREE.SphereBufferGeometry(1, 16, 8)
+    // const sphere = new THREE.SphereBufferGeometry(1, 16, 8)
 
     lights.rotating = []
     const light1 = new THREE.PointLight(0xff0040, 2, 50)
-    light1.add(new THREE.Mesh(sphere, new THREE.MeshBasicMaterial({ color: 0xff0040 } )))
+    // light1.add(new THREE.Mesh(sphere, new THREE.MeshBasicMaterial({ color: 0xff0040 } )))
     this.scene.add(light1)
     lights.rotating.push(light1)
 
     const light2 = new THREE.PointLight(0x0040ff, 2, 50)
-    light2.add(new THREE.Mesh( sphere, new THREE.MeshBasicMaterial({ color: 0x0040ff } )))
+    // light2.add(new THREE.Mesh( sphere, new THREE.MeshBasicMaterial({ color: 0x0040ff } )))
     this.scene.add(light2)
     lights.rotating.push(light2)
 
     const light3 = new THREE.PointLight(0x80ff80, 2, 50)
-    light3.add(new THREE.Mesh(sphere, new THREE.MeshBasicMaterial({ color: 0x80ff80 } )))
+    // light3.add(new THREE.Mesh(sphere, new THREE.MeshBasicMaterial({ color: 0x80ff80 } )))
     this.scene.add(light3)
     lights.rotating.push(light3)
 
     const light4 = new THREE.PointLight(0xffaa00, 2, 50)
-    light4.add(new THREE.Mesh( sphere, new THREE.MeshBasicMaterial({ color: 0xffaa00 } )))
+    // light4.add(new THREE.Mesh( sphere, new THREE.MeshBasicMaterial({ color: 0xffaa00 } )))
     this.scene.add(light4)
     lights.rotating.push(light4)
 

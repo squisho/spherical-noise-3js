@@ -11,12 +11,7 @@ const { topPlane, bottomPlane } = three.createPlanes()
 three.scene.add(three.group)
 three.createLights()
 
-const gui = new dat.GUI({ height : 5 * 32 - 1 })
-gui.add({ detail: 5 }, 'detail').min(0).max(5).step(1).onFinishChange(value => {
-  const old = ico.geometry
-  ico.geometry = three.createIcoGeometry(10, value)
-  old.dispose()
-})
+createGui(three)
 
 main()
 
@@ -57,7 +52,7 @@ function update(ext) {
 
   three.group.rotation.y += 0.005
 
-  let delta = nodulate(flatness, 0.0, 1.0, 0.002, 0.01, 0.001)
+  let delta = nodulate(flatness, 0.0, 1.0, 0.002, 0.02, 0.001)
   offset += delta // 0.005;
 
   updateLights()
