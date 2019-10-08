@@ -17,8 +17,12 @@ const FEATURES = [
   // 'mfcc'
 ]
 
+const noiseConfig = {
+  plane: { offset: 0, delta: 'spectralFlatness' },
+  ico: { offset: 0, delta: 'spectralFlatness' },
+}
+
 let originalVertices
-let offset = 0
 noise.seed(Math.random())
 
 const three = new ThreeController('container')
@@ -67,21 +71,20 @@ function update(ext) {
 
   // makeRoughBall(ico, modulate(pow, 0, 1, 0.00001, 10), modulate(upperAvgFr, 0, 1, 1, 10));
 
-  three.group.rotation.y += 0.005
-
-  let delta = nodulate(flatness, 0.0, 1.0, 0.0002, 0.02, 0.001)
-  offset += delta // 0.005;
-
-  updateLights(ext)
+  // three.group.rotation.y += 0.005
 
   const color = [
-    ext.getAvg('rms'),
+    ext.getAvg('rms') * 3,
     ext.getAvg('perceptualSpread'),
     ext.getAvg('perceptualSharpness')
   ]
 
   three.setIcoColor(color, true)
   three.setPlanesColor(color, true)
+
+  updateLights()
+
+  updateOffsets(ext)
 }
 
 function makeRoughBall(mesh, shift, scale) {
@@ -90,7 +93,7 @@ function makeRoughBall(mesh, shift, scale) {
     const amp = 7 * scale
     const time = window.performance.now()
     vertex.normalize()
-    const rf = s => (time * 0.00001 + offset) * s
+    const rf = s => (time * 0.00001 + noiseConfig.ico.offset) * s
 
     let distance = localOffset + noise.perlin3(vertex.x + rf(7), vertex.y + rf(8), vertex.z + rf(9)) * amp
 
@@ -108,7 +111,7 @@ function makeRoughGround(mesh, distortionFr) {
   mesh.geometry.vertices.forEach(function(vertex, i) {
     const amp = 2 * distortionFr
     const time = Date.now()
-    const rf = s => time * s + offset
+    const rf = s => time * s + noiseConfig.plane.offset
     const distance = noise.perlin2(vertex.x + rf(0.0003), vertex.y + rf(0.0001)) * amp
     vertex.z = distance
   })
@@ -121,4 +124,12 @@ function makeRoughGround(mesh, distortionFr) {
 
 function updateLights(ext) {
   three.rotateLights()
+}
+
+function updateOffsets(ext) {
+  const icoDelta = nodulate(ext.getAvg(noiseConfig.ico.delta), 0.0, 1.0, 0.0001, 0.02, 0.0001)
+  noiseConfig.ico.offset += icoDelta
+
+  const planeDelta = nodulate(ext.getAvg(noiseConfig.plane.delta), 0.0, 1.0, 0.0, 0.05, 0.00001)
+  noiseConfig.plane.offset += planeDelta
 }
