@@ -105,13 +105,34 @@ class ThreeController {
     lights.rotating = [0xff0040, 0x0040ff, 0x80ff80, 0xffaa00].map(color => {
       const light = new THREE.PointLight(color, 2, 50)
       // light.add(new THREE.Mesh(sphere, new THREE.MeshBasicMaterial({ color } )))
-      this.scene.add(light1)
+      this.scene.add(light)
       return light
     })
 
     this.lights = lights
 
     return this.lights
+  }
+
+  rotateLights = () => {
+    const time = Date.now() * 0.0005
+    const delta = three.clock.getDelta()
+
+    this.lights.rotating[0].position.y = Math.cos(time * 0.5) * 40
+    this.lights.rotating[0].position.z = Math.cos(time * 0.3) * 30
+    this.lights.rotating[0].position.x = Math.sin(time * 0.7) * 30
+
+    this.lights.rotating[1].position.x = Math.cos(time * 0.3) * 30
+    this.lights.rotating[1].position.y = Math.sin(time * 0.5) * 40
+    this.lights.rotating[1].position.z = Math.sin(time * 0.7) * 30
+
+    this.lights.rotating[2].position.x = Math.sin(time * 0.7) * 30
+    this.lights.rotating[2].position.y = Math.cos(time * 0.3) * 40
+    this.lights.rotating[2].position.z = Math.sin(time * 0.5) * 30
+
+    this.lights.rotating[3].position.x = Math.sin(time * 0.3) * 30
+    this.lights.rotating[3].position.y = Math.cos(time * 0.7) * 40
+    this.lights.rotating[3].position.z = Math.sin(time * 0.5) * 30
   }
 
   setIcoDetail = detail => {
@@ -121,16 +142,16 @@ class ThreeController {
     old.dispose()
   }
 
-  setIcoColor = c => updateColor(ico.material, c)
+  setIcoColor = (...a) => updateColor(this.objects.ico.material, ...a)
 
-  setPlanesColor = c => {
+  setPlanesColor = (...a) => {
     const planes = [this.objects.topPlane, this.objects.bottomPlane]
-    planes.forEach(plane => updateColor(plane.material, c))
+    planes.forEach(plane => updateColor(plane.material, ...a))
   }
 
-  setAmbientLightColor = c => updateColor(this.lights.ambient, c)
+  setAmbientLightColor = (...a) => updateColor(this.lights.ambient, ...a)
 
-  setSpotLightColor = c => updateColor(this.lights.spot, c)
+  setSpotLightColor = (...a) => updateColor(this.lights.spot, ...a)
 
-  updateRLight = i => c => updateColor(this.lights.rotating[i], c)
+  updateRLight = i => (...a) => updateColor(this.lights.rotating[i], ...a)
 }

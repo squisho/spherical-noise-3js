@@ -1,20 +1,20 @@
 const FEATURES = [
   'rms',
-  'zcr',
-  'energy',
+  // 'zcr',
+  // 'energy',
   'amplitudeSpectrum',
-  'spectralCentroid',
+  // 'spectralCentroid',
   'spectralFlatness',
-  'spectralSlope',
-  'spectralRolloff',
-  'spectralSpread',
-  'spectralSkewness',
-  'spectralKurtosis',
+  // 'spectralSlope',
+  // 'spectralRolloff',
+  // 'spectralSpread',
+  // 'spectralSkewness',
+  // 'spectralKurtosis',
   // 'chroma',
   'loudness',
   'perceptualSpread',
   'perceptualSharpness',
-  'mfcc'
+  // 'mfcc'
 ]
 
 let originalVertices
@@ -69,22 +69,30 @@ function update(ext) {
 
   three.group.rotation.y += 0.005
 
-  let delta = nodulate(flatness, 0.0, 1.0, 0.002, 0.02, 0.001)
+  let delta = nodulate(flatness, 0.0, 1.0, 0.0002, 0.02, 0.001)
   offset += delta // 0.005;
 
-  updateLights()
+  updateLights(ext)
+
+  const color = [
+    ext.getAvg('rms'),
+    ext.getAvg('perceptualSpread'),
+    ext.getAvg('perceptualSharpness')
+  ]
+
+  three.setIcoColor(color, true)
+  three.setPlanesColor(color, true)
 }
 
 function makeRoughBall(mesh, shift, scale) {
   mesh.geometry.vertices.forEach((vertex, i) => {
-    const localOffset = mesh.geometry.parameters.radius
-    const amp = 7
+    const localOffset = mesh.geometry.parameters.radius + shift
+    const amp = 7 * scale
     const time = window.performance.now()
     vertex.normalize()
-    const rf = time * 0.00001 + offset
+    const rf = s => (time * 0.00001 + offset) * s
 
-    let distance =
-      localOffset + shift + noise.perlin3(vertex.x + rf * 7, vertex.y + rf * 8, vertex.z + rf * 9) * amp * scale
+    let distance = localOffset + noise.perlin3(vertex.x + rf(7), vertex.y + rf(8), vertex.z + rf(9)) * amp
 
     if (distance < 0.001) distance = 0.001
     vertex.multiplyScalar(distance)
@@ -98,10 +106,10 @@ function makeRoughBall(mesh, shift, scale) {
 
 function makeRoughGround(mesh, distortionFr) {
   mesh.geometry.vertices.forEach(function(vertex, i) {
-    const amp = 2
+    const amp = 2 * distortionFr
     const time = Date.now()
-    const distance =
-      (noise.perlin2(vertex.x + time * 0.0003 + offset, vertex.y + time * 0.0001 + offset) + 0) * distortionFr * amp
+    const rf = s => time * s + offset
+    const distance = noise.perlin2(vertex.x + rf(0.0003), vertex.y + rf(0.0001)) * amp
     vertex.z = distance
   })
 
@@ -111,23 +119,6 @@ function makeRoughGround(mesh, distortionFr) {
   mesh.geometry.computeFaceNormals()
 }
 
-function updateLights() {
-  const time = Date.now() * 0.0005;
-  const delta = three.clock.getDelta();
-
-  three.lights.rotating[0].position.x = Math.sin(time * 0.7) * 30;
-  three.lights.rotating[0].position.y = Math.cos(time * 0.5) * 40;
-  three.lights.rotating[0].position.z = Math.cos(time * 0.3) * 30;
-  
-  three.lights.rotating[1].position.x = Math.cos(time * 0.3) * 30;
-  three.lights.rotating[1].position.y = Math.sin(time * 0.5) * 40;
-  three.lights.rotating[1].position.z = Math.sin(time * 0.7) * 30;
-  
-  three.lights.rotating[2].position.x = Math.sin(time * 0.7) * 30;
-  three.lights.rotating[2].position.y = Math.cos(time * 0.3) * 40;
-  three.lights.rotating[2].position.z = Math.sin(time * 0.5) * 30;
-  
-  three.lights.rotating[3].position.x = Math.sin(time * 0.3) * 30;
-  three.lights.rotating[3].position.y = Math.cos(time * 0.7) * 40;
-  three.lights.rotating[3].position.z = Math.sin(time * 0.5) * 30;
+function updateLights(ext) {
+  three.rotateLights()
 }
