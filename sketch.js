@@ -71,7 +71,7 @@ function update(ext) {
 
   // makeRoughBall(ico, modulate(pow, 0, 1, 0.00001, 10), modulate(upperAvgFr, 0, 1, 1, 10));
 
-  // three.group.rotation.y += 0.005
+  three.group.rotation.y += 0.002
 
   const color = [
     ext.getAvg('rms') * 3,
