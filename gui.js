@@ -17,4 +17,6 @@ const createGui = three => {
     colors.forEach((color, i) => {
         style.addColor({ color }, 'color').name(`Point Light ${i}`).onChange(three.updateRLight(i))
     })
+
+    return gui
 }

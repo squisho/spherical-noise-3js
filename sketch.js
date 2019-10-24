@@ -27,12 +27,15 @@ noise.seed(Math.random())
 
 const three = new ThreeController('container')
 const materials = three.createMaterials()
-let ico = three.createIco({ detail: 5, radius: 10 })
+const ico = new Ico({ detail: 5, radius: 15 })
+three.group.add(ico.mesh)
+// let ico = three.createIco({ detail: 5, radius: 10 })
 const { topPlane, bottomPlane } = three.createPlanes()
 three.scene.add(three.group)
 three.createLights()
 
-createGui(three)
+const gui = createGui(three)
+ico.noiseFilter.createControls(gui)
 
 main()
 
@@ -67,19 +70,20 @@ function update(ext) {
   const size = nodulate(loudness, 0, 24, 1, 5, 1)
   const roughness = (nodulate(flatness, 0, 1, 1, 2, 1) * size) / 2
 
-  makeRoughBall(ico, size, roughness)
+  ico.update()
+  // makeRoughBall(ico, size, roughness)
 
   // makeRoughBall(ico, modulate(pow, 0, 1, 0.00001, 10), modulate(upperAvgFr, 0, 1, 1, 10));
 
-  three.group.rotation.y += 0.002
+  // three.group.rotation.y += 0.002
 
   const color = [
-    ext.getAvg('rms') * 3,
+    ext.getAvg('rms') * 2,
     ext.getAvg('perceptualSpread'),
-    ext.getAvg('perceptualSharpness')
+    ext.getAvg('perceptualSharpness') / 2
   ]
 
-  three.setIcoColor(color, true)
+  // three.setIcoColor(color, true)
   three.setPlanesColor(color, true)
 
   updateLights()

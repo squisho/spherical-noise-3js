@@ -39,13 +39,7 @@ class ThreeController {
         shininess: 1000,
         wireframe: true,
         shading: THREE.FlatShading,
-      }),
-      sphere: new THREE.MeshPhongMaterial({
-        color: 0xaa90dd,
-        reflectivity:  100,
-        shading:  THREE.FlatShading,
-        // wireframe: true,
-      }),
+      })
     }
 
     return this.materials
@@ -54,20 +48,6 @@ class ThreeController {
   removeObject = object => {
     const selectedObject = this.scene.getObjectByName(object.name);
     this.scene.remove(selectedObject);
-  }
-
-  createIcoGeometry = (radius, detail) => new THREE.IcosahedronGeometry(radius, detail)
-
-  createIco = ({ detail, material=this.materials.sphere, radius }) => {
-    const ico = new THREE.Mesh(this.createIcoGeometry(radius, detail), material)
-    ico.rotation.z = 0.5
-    ico.name = 'sphere'
-    ico.castShadow = true
-
-    this.group.add(ico)
-    this.objects.ico = ico
-
-    return this.objects.ico
   }
 
   createPlane = (x, y, z) => {
@@ -134,15 +114,6 @@ class ThreeController {
     this.lights.rotating[3].position.y = Math.cos(time * 0.7) * 40
     this.lights.rotating[3].position.z = Math.sin(time * 0.5) * 30
   }
-
-  setIcoDetail = detail => {
-    const ico = this.objects.ico
-    const old = ico.geometry
-    ico.geometry = this.createIcoGeometry(10, detail)
-    old.dispose()
-  }
-
-  setIcoColor = (...a) => updateColor(this.objects.ico.material, ...a)
 
   setPlanesColor = (...a) => {
     const planes = [this.objects.topPlane, this.objects.bottomPlane]
