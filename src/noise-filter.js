@@ -1,3 +1,8 @@
+import { Noise } from 'noisejs'
+import * as THREE from 'three'
+
+const noise = new Noise(Math.random())
+
 export default class NoiseFilter {
     constructor() {
         this.settings = {

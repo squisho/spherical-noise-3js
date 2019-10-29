@@ -1,3 +1,5 @@
+import Meyda from 'meyda'
+
 import { avg, max } from './utils'
 
 // The navigator object contains information about the browser.

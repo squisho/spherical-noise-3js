@@ -1,3 +1,5 @@
+import * as dat from 'dat.gui'
+
 export const createGui = three => {
     const gui = new dat.GUI({ height : 5 * 32 - 1 })
 

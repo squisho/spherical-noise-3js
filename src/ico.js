@@ -1,3 +1,5 @@
+import * as THREE from 'three'
+
 import NoiseFilter from './noise-filter'
 
 export default class Ico {

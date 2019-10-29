@@ -1,3 +1,6 @@
+import * as THREE from 'three'
+import OrbitControls from 'three-orbitcontrols'
+
 import { updateColor } from './utils'
 
 export default class ThreeController {
@@ -18,7 +21,7 @@ export default class ThreeController {
 
     this.camera.position.z = 75
 
-    this.controls = new THREE.OrbitControls(this.camera, this.renderer.domElement)
+    this.controls = new OrbitControls(this.camera, this.renderer.domElement)
 
     window.addEventListener('resize', this.onWindowResize, false);
 
