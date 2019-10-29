@@ -1,3 +1,9 @@
+import Extractr from './extractr'
+import { createGui } from './gui'
+import Ico from './ico'
+import ThreeController from './three-controller'
+import { modulate, nodulate } from './utils'
+
 const FEATURES = [
   'rms',
   // 'zcr',

@@ -1,4 +1,4 @@
-class NoiseFilter {
+export default class NoiseFilter {
     constructor() {
         this.settings = {
             baseRoughness: 1,

@@ -1,9 +1,11 @@
-class Ico {
+import NoiseFilter from './noise-filter'
+
+export default class Ico {
     constructor({ radius, detail }) {
         const material = new THREE.MeshPhongMaterial({
             color: 0xaa90dd,
             reflectivity:  100,
-            // shading:  THREE.FlatShading,
+            // flatShading: true,
             // wireframe: true,
         })
 

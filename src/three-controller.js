@@ -1,4 +1,6 @@
-class ThreeController {
+import { updateColor } from './utils'
+
+export default class ThreeController {
   constructor(containerId) {
     this.container = document.getElementById(containerId)
     this.renderer = new THREE.WebGLRenderer({ antialias: true })
@@ -34,11 +36,11 @@ class ThreeController {
     this.materials = {
       plane: new THREE.MeshPhongMaterial({
         color: 0x22aa99,
+        flatShading: true,
         side: THREE.DoubleSide,
         reflectivity: 100,
         shininess: 1000,
         wireframe: true,
-        shading: THREE.FlatShading,
       })
     }
 
@@ -78,7 +80,7 @@ class ThreeController {
     lights.spot.intensity = 0.3
     lights.spot.position.set(-10, 40, 20)
     lights.spot.castShadow = true
-    three.scene.add(lights.spot)
+    this.scene.add(lights.spot)
 
     // const sphere = new THREE.SphereBufferGeometry(1, 16, 8)
 
@@ -96,7 +98,7 @@ class ThreeController {
 
   rotateLights = () => {
     const time = Date.now() * 0.0005
-    const delta = three.clock.getDelta()
+    const delta = this.clock.getDelta()
 
     this.lights.rotating[0].position.y = Math.cos(time * 0.5) * 40
     this.lights.rotating[0].position.z = Math.cos(time * 0.3) * 30

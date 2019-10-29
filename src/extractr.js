@@ -1,3 +1,5 @@
+import { avg, max } from './utils'
+
 // The navigator object contains information about the browser.
 // this async call initializes audio input from the user
 // navigator.mediaDevices.enumerateDevices().then(devices => {
@@ -7,7 +9,7 @@
 //   })
 // })
 
-class Extractr {
+export default class Extractr {
   constructor(features, alphas) {
     this.features = features
     this.avgs = features.reduce((acc, cur) => ({ ...acc, [cur]: 0 }), {})

@@ -1,4 +1,4 @@
-const createGui = three => {
+export const createGui = three => {
     const gui = new dat.GUI({ height : 5 * 32 - 1 })
 
     const style = gui.addFolder('Style')
