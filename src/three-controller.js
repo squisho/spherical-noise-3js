@@ -35,42 +35,9 @@ export default class ThreeController {
     this.renderer.setSize(window.innerWidth, window.innerHeight);
   }
 
-  createMaterials = () => {
-    this.materials = {
-      plane: new THREE.MeshPhongMaterial({
-        color: 0x22aa99,
-        flatShading: true,
-        side: THREE.DoubleSide,
-        reflectivity: 100,
-        shininess: 1000,
-        wireframe: true,
-      })
-    }
-
-    return this.materials
-  }
-
   removeObject = object => {
     const selectedObject = this.scene.getObjectByName(object.name);
     this.scene.remove(selectedObject);
-  }
-
-  createPlane = (x, y, z) => {
-    const planeGeometry = new THREE.PlaneGeometry(800, 800, 40, 40)
-    const plane = new THREE.Mesh(planeGeometry, this.materials.plane)
-    plane.rotation.x = -0.5 * Math.PI
-    plane.position.set(x, y, z)
-
-    return plane
-  }
-
-  createPlanes = () => {
-    this.objects.topPlane = this.createPlane(0, 30, 0)
-    this.objects.bottomPlane = this.createPlane(0, -30, 0)
-    this.group.add(this.objects.topPlane)
-    this.group.add(this.objects.bottomPlane)
-
-    return this.objects
   }
 
   createLights = () => {
@@ -118,11 +85,6 @@ export default class ThreeController {
     this.lights.rotating[3].position.x = Math.sin(time * 0.3) * 30
     this.lights.rotating[3].position.y = Math.cos(time * 0.7) * 40
     this.lights.rotating[3].position.z = Math.sin(time * 0.5) * 30
-  }
-
-  setPlanesColor = (...a) => {
-    const planes = [this.objects.topPlane, this.objects.bottomPlane]
-    planes.forEach(plane => updateColor(plane.material, ...a))
   }
 
   setAmbientLightColor = (...a) => updateColor(this.lights.ambient, ...a)

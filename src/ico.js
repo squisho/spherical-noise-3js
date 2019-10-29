@@ -27,7 +27,7 @@ export default class Ico {
         old.dispose()
     }
 
-    setIcoColor = (...a) => updateColor(this.mesh.material, ...a)
+    setColor = (...a) => updateColor(this.mesh.material, ...a)
 
     update = () => {
         // console.log(this.noiseFilter.settings)

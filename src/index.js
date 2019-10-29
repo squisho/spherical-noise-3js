@@ -3,6 +3,7 @@ import { Noise } from 'noisejs'
 import Extractr from './extractr'
 import { createGui } from './gui'
 import Ico from './ico'
+import Plane from './plane'
 import ThreeController from './three-controller'
 import { modulate, nodulate } from './utils'
 
@@ -36,11 +37,15 @@ let originalVertices
 noise.seed(Math.random())
 
 const three = new ThreeController('container')
-const materials = three.createMaterials()
+
 const ico = new Ico({ detail: 5, radius: 15 })
 three.group.add(ico.mesh)
-// let ico = three.createIco({ detail: 5, radius: 10 })
-const { topPlane, bottomPlane } = three.createPlanes()
+
+const topPlane = new Plane(0, 30, 0)
+const bottomPlane = new Plane(0, -30, 0)
+const planes = [topPlane, bottomPlane]
+planes.forEach(p => three.group.add(p.mesh))
+
 three.scene.add(three.group)
 three.createLights()
 
@@ -69,8 +74,8 @@ function update(ext) {
   const stats = ext.spectrumStats()
   if (!stats) return
 
-  makeRoughGround(topPlane, modulate(stats.upper.avgFr, 0, 1, 5, 25))
-  makeRoughGround(bottomPlane, modulate(stats.lower.maxFr, 0, 1, 5, 25))
+  makeRoughGround(topPlane.mesh, modulate(stats.upper.avgFr, 0, 1, 5, 25))
+  makeRoughGround(bottomPlane.mesh, modulate(stats.lower.maxFr, 0, 1, 5, 25))
 
   const pow = Math.pow(stats.lower.maxFr, 0.8)
 
@@ -93,8 +98,8 @@ function update(ext) {
     ext.getAvg('perceptualSharpness') / 2
   ]
 
-  // three.setIcoColor(color, true)
-  three.setPlanesColor(color, true)
+  // ico.setColor(color, true)
+  planes.forEach(p => p.setColor(color, true))
 
   updateLights()
 
