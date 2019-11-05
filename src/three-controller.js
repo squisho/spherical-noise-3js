@@ -42,8 +42,8 @@ export default class ThreeController {
 
   createLights = () => {
     const lights = {}
-
-    lights.ambient = new THREE.AmbientLight(0xaaaaaa)
+    const intensity = 1;
+    lights.ambient = new THREE.AmbientLight(0x909090, intensity)
     this.scene.add(lights.ambient)
 
     lights.spot = new THREE.SpotLight(0xffffff)
