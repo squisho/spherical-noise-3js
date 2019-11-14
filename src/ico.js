@@ -29,8 +29,9 @@ export default class Ico {
 
     setColor = (...a) => updateColor(this.mesh.material, ...a)
 
-    update = () => {
-        // console.log(this.noiseFilter.settings)
+    update = (extractr) => {
+        this.noiseFilter.update(extractr)
+
         const localOffset = this.mesh.geometry.parameters.radius // + shift
         this.mesh.geometry.vertices.forEach(vertex => {
             vertex.normalize()

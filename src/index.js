@@ -57,6 +57,7 @@ main()
 async function main() {
   const ext = new Extractr(FEATURES)
   await ext.setup()
+  console.log(ext)
 
   const render = () => {
     requestAnimationFrame(render)
@@ -68,8 +69,8 @@ async function main() {
 }
 
 function update(ext) {
-  // ico.rotation.x+=2/100;
-  // ico.rotation.y+=2/100;
+  // ico.mesh.rotation.x+=2/100;
+  // ico.mesh.rotation.y+=2/100;
 
   const stats = ext.spectrumStats()
   if (!stats) return
@@ -80,17 +81,17 @@ function update(ext) {
   const pow = Math.pow(stats.lower.maxFr, 0.8)
 
   const flatness = ext.getAvg('spectralFlatness') // ext.analyzer.get('spectralFlatness')
-  const loudness = ext.getAvg('loudness') // ext.analyzer.get('loudness').total
+  const loudness = ext.analyzer.get('loudness').total
 
   const size = nodulate(loudness, 0, 24, 1, 5, 1)
   const roughness = (nodulate(flatness, 0, 1, 1, 2, 1) * size) / 2
 
-  ico.update()
+  ico.update(ext)
   // makeRoughBall(ico, size, roughness)
 
   // makeRoughBall(ico, modulate(pow, 0, 1, 0.00001, 10), modulate(upperAvgFr, 0, 1, 1, 10));
 
-  // three.group.rotation.y += 0.002
+  three.group.rotation.y += 0.002
 
   const color = [
     ext.getAvg('rms') * 2,

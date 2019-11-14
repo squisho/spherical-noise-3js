@@ -1,6 +1,8 @@
 import { Noise } from 'noisejs'
 import * as THREE from 'three'
 
+import { logMap, nodulate } from './utils'
+
 const noise = new Noise(Math.random())
 
 export default class NoiseFilter {
@@ -8,8 +10,8 @@ export default class NoiseFilter {
         this.settings = {
             baseRoughness: 1,
             center: new THREE.Vector3(0, 0, 0),
-            numLayers: 1,
-            persistence: 0.5,
+            numLayers: 2,
+            persistence: 0.15,
             roughness: 5,
             speed: 0.001,
             strength: 2,
@@ -41,6 +43,16 @@ export default class NoiseFilter {
         if (x) this.settings.center.x = x 
         if (y) this.settings.center.y = y 
         if (z) this.settings.cetner.z = z
+    }
+
+    update = ext => {
+        const loudness = ext.getAvg('loudness', loudness => loudness.total)
+        const strength = logMap(loudness, 0, 24, 1, 15)
+
+        const sharpness = ext.getAvg('perceptualSharpness')
+        const baseRoughness = logMap(sharpness, 0, 1, 0, 1)
+
+        this.updateSettings({ baseRoughness, strength })
     }
 
     createControls = gui => {

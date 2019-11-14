@@ -1,3 +1,5 @@
+import LogScale from 'log-scale'
+
 //some helper functions here
 export function fractionate(val, minVal, maxVal) {
   return (val - minVal) / (maxVal - minVal)
@@ -36,4 +38,20 @@ export const updateColor = (obj, c, rgb) => {
   else if (isArray) obj.color.setHSL(...c)
   else if (typeof c === 'string') obj.color.setHex(h2x(c))
   else obj.color.set(c)
+}
+
+
+const logScales = {}
+
+export const logMap = (val, inMin, inMax, outMin, outMax) => { 
+  const logKey = `${inMin}-${inMax}`
+  
+  let logScale = logScales[logKey]
+  if (!logScale) {
+    logScale = new LogScale(inMin, inMax)
+    logScales[logKey] = logScale
+  }
+
+  const lin =  logScale.logarithmicToLinear(val)
+  return modulate(lin, 0, 1, outMin, outMax)
 }

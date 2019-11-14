@@ -41,8 +41,10 @@ export default class Extractr {
     return this.analyzer
   }
 
-  getAvg = feature => {
-    const curr = this.analyzer.get(feature)
+  getAvg = (feature, process) => {
+    let curr = this.analyzer.get(feature)
+    if (process) curr = process(curr)
+
     const a = this.alphas[feature]
     const prev = this.avgs[feature]
 
