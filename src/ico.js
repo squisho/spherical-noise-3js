@@ -57,7 +57,7 @@ export default class Ico {
         const maxIndex = chroma.indexOf(1)
         const hue = modulate(maxIndex, 0, 12, 0, 360) + this.offset
         const newColor = new THREE.Color(`hsl(${hue % 360}, 50%, 50%)`)
-        const lerped = this.mesh.material.color.lerpHSL(newColor, 0.01)
+        const lerped = this.mesh.material.color.lerpHSL(newColor, 0.05)
         this.setColor(lerped)
 
         this.offset += 0.05

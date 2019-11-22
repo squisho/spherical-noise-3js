@@ -50,10 +50,10 @@ export default class NoiseFilter {
         const strength = logMap(loudness, 0, 24, 1, 15)
 
         const sharpness = ext.getAvg('perceptualSharpness')
-        const baseRoughness = logMap(sharpness, 0, 1, 0, 1)
+        const baseRoughness = logMap(sharpness, 0, 1, 0, 2)
 
         const flatness = ext.getAvg('spectralFlatness')
-        const roughness = logMap(flatness, 0, 1, 1, 18)
+        const roughness = logMap(flatness, 0, 1, 1, 20)
 
         const energy = ext.getAvg('energy')
         const persistence = logMap(energy, 0, 512, 0, 1)
