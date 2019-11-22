@@ -1,6 +1,7 @@
 import * as THREE from 'three'
 
 import NoiseFilter from './noise-filter'
+import { modulate, updateColor } from './utils'
 
 export default class Ico {
     constructor({ radius, detail }) {
@@ -17,6 +18,8 @@ export default class Ico {
         this.mesh.castShadow = true
 
         this.noiseFilter = new NoiseFilter()
+
+        this.offset = 0
     }
 
     createIcoGeometry = (radius, detail) => new THREE.IcosahedronGeometry(radius, detail)
@@ -32,17 +35,31 @@ export default class Ico {
     update = (extractr) => {
         this.noiseFilter.update(extractr)
 
+        const minRadius = 1
         const localOffset = this.mesh.geometry.parameters.radius // + shift
         this.mesh.geometry.vertices.forEach(vertex => {
             vertex.normalize()
             let dist = localOffset + this.noiseFilter.evaluate(vertex)
-            if (dist < 0.001) dist = 0.001
+            if (dist < minRadius) dist = minRadius
             vertex.multiplyScalar(dist)
         })
+
+        this.soundToColor(extractr)
 
         this.mesh.geometry.verticesNeedUpdate = true
         this.mesh.geometry.normalsNeedUpdate = true
         this.mesh.geometry.computeVertexNormals()
         this.mesh.geometry.computeFaceNormals()
+    }
+
+    soundToColor = ext => {
+        const chroma = ext.analyzer.get('chroma')
+        const maxIndex = chroma.indexOf(1)
+        const hue = modulate(maxIndex, 0, 12, 0, 360) + this.offset
+        const newColor = new THREE.Color(`hsl(${hue % 360}, 50%, 40%)`)
+        const lerped = this.mesh.material.color.lerpHSL(newColor, 0.01)
+        this.setColor(lerped)
+
+        this.offset += 0.05
     }
 }

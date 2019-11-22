@@ -54,12 +54,12 @@ export default class ThreeController {
 
     // const sphere = new THREE.SphereBufferGeometry(1, 16, 8)
 
-    lights.rotating = [0xff0040, 0x0040ff, 0x80ff80, 0xffaa00].map(color => {
-      const light = new THREE.PointLight(color, 0.5, 50)
-      // light.add(new THREE.Mesh(sphere, new THREE.MeshBasicMaterial({ color } )))
-      this.scene.add(light)
-      return light
-    })
+    // lights.rotating = [0xff0040, 0x0040ff, 0x80ff80, 0xffaa00].map(color => {
+    //   const light = new THREE.PointLight(color, 0.5, 50)
+    //   // light.add(new THREE.Mesh(sphere, new THREE.MeshBasicMaterial({ color } )))
+    //   this.scene.add(light)
+    //   return light
+    // })
 
     this.lights = lights
 

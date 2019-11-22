@@ -52,7 +52,13 @@ export default class NoiseFilter {
         const sharpness = ext.getAvg('perceptualSharpness')
         const baseRoughness = logMap(sharpness, 0, 1, 0, 1)
 
-        this.updateSettings({ baseRoughness, strength })
+        const flatness = ext.getAvg('spectralFlatness')
+        const roughness = logMap(flatness, 0, 1, 1, 18)
+
+        const energy = ext.getAvg('energy')
+        const persistence = logMap(energy, 0, 512, 0, 1)
+
+        this.updateSettings({ baseRoughness, persistence, roughness, strength })
     }
 
     createControls = gui => {

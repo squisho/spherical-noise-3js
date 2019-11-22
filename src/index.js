@@ -12,7 +12,7 @@ const noise = new Noise(Math.random())
 const FEATURES = [
   'rms',
   // 'zcr',
-  // 'energy',
+  'energy',
   'amplitudeSpectrum',
   // 'spectralCentroid',
   'spectralFlatness',
@@ -102,7 +102,7 @@ function update(ext) {
   // ico.setColor(color, true)
   planes.forEach(p => p.setColor(color, true))
 
-  updateLights()
+  //  updateLights()
 
   updateOffsets(ext)
 }

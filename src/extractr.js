@@ -12,10 +12,10 @@ import { avg, max } from './utils'
 // })
 
 export default class Extractr {
-  constructor(features, alphas) {
+  constructor(features, alphas={}) {
     this.features = features
     this.avgs = features.reduce((acc, cur) => ({ ...acc, [cur]: 0 }), {})
-    this.alphas = features.reduce((acc, cur, i) => ({ ...acc, [cur]: alphas ? alphas[i] : 0.7 }), {})
+    this.alphas = features.reduce((acc, cur, i) => ({ ...acc, [cur]: alphas[cur] || 0.9 }), {})
   }
 
   setup = async () => {
