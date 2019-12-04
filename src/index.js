@@ -11,21 +11,21 @@ const noise = new Noise(Math.random())
 
 const FEATURES = [
   'rms',
-  // 'zcr',
+  'zcr',
   'energy',
   'amplitudeSpectrum',
-  // 'spectralCentroid',
+  'spectralCentroid',
   'spectralFlatness',
-  // 'spectralSlope',
-  // 'spectralRolloff',
-  // 'spectralSpread',
-  // 'spectralSkewness',
-  // 'spectralKurtosis',
-  // 'chroma',
+  'spectralSlope',
+  'spectralRolloff',
+  'spectralSpread',
+  'spectralSkewness',
+  'spectralKurtosis',
+  'chroma',
   'loudness',
   'perceptualSpread',
   'perceptualSharpness',
-  // 'mfcc'
+  'mfcc'
 ]
 
 const noiseConfig = {
