@@ -52,7 +52,7 @@ export default class NoiseFilter {
             speed: 
             {   def: 0.001,
                 outmin: 0,
-                outmax: 5,
+                outmax: 0.015,
                 mapTo: false,
                 rmin: undefined,
                 rmax: undefined
@@ -100,14 +100,15 @@ export default class NoiseFilter {
 
         var settingsToUpdate = {}
 
-        for (var o in this.mods){
-            var curo = this.mods[o]
+
+        for (let o in this.mods){
+            const curo = this.mods[o]
             if (curo.mapTo){
-                var newVal
+                let newVal
                 if (curo.mapTo == 'loudness') newVal = ext.getAvg('loudness', loudness => loudness.total);
                 else newVal = ext.getAvg(`${curo.mapTo}`)
                 //console.log(curo.rmin, curo.rmax)
-                var outVal = logMap(newVal, curo.rmin, curo.rmax, curo.outmin, curo.outmax)
+                let outVal = logMap(newVal, curo.rmin, curo.rmax, curo.outmin, curo.outmax)
 
                 settingsToUpdate[o] = outVal;
             }
@@ -125,8 +126,7 @@ export default class NoiseFilter {
         // const persistence = logMap(energy, 0, 512, 0, 1)
         // console.log({ baseRoughness, persistence, roughness, strength })
         // this.updateSettings({ baseRoughness, persistence, roughness, strength })
-        console.log(this.mods)
-        console.log(settingsToUpdate)
+        console.log(this.mods.speed)
         this.updateSettings(settingsToUpdate)
     }
 
@@ -172,16 +172,16 @@ export default class NoiseFilter {
         // f2.add(this.mods, 'numLayers', features).onChange(val => this.mods.numLayers = {mapTo: val})
         // f2.add(this.mods.numLayers, 'outmin').min(0).max(10).onChange(val => this.mods.numLayers = {outmin: val})
         // f2.add(this.mods.numLayers, 'outmax').min(0).max(10).onChange(val => this.mods.numLayers = {outmax: val})
-        f2.add(this.mods.persistence, 'mapTo', features).onChange(val => this.mods.persistence.mapTo = val)
+        f2.add(this.mods.persistence, 'mapTo', features).name('persistence').onChange(val => this.mods.persistence.mapTo = val)
         f2.add(this.mods.persistence, 'outmin').min(0).max(10).onChange(val => this.mods.persistence.outmin = val)
         f2.add(this.mods.persistence, 'outmax').min(0).max(10).onChange(val => this.mods.persistence.outmax = val)
-        f2.add(this.mods.roughness, 'mapTo', features).onChange(val => this.mods.roughness.mapTo = val)
+        f2.add(this.mods.roughness, 'mapTo', features).name('roughness').onChange(val => this.mods.roughness.mapTo = val)
         f2.add(this.mods.roughness, 'outmin').min(0).max(10).onChange(val => this.mods.roughness.outmin = val)
         f2.add(this.mods.roughness, 'outmax').min(0).max(10).onChange(val => this.mods.roughness.outmax = val)
-        f2.add(this.mods.speed, 'mapTo', features).onChange(val => this.mods.speed.mapTo = val)
+        f2.add(this.mods.speed, 'mapTo', features).name('speed').onChange(val => this.mods.speed.mapTo = val)
         f2.add(this.mods.speed, 'outmin').min(0).max(10).onChange(val => this.mods.speed.outmin = val)
         f2.add(this.mods.speed, 'outmax').min(0).max(10).onChange(val => this.mods.speed.outmax = val)
-        f2.add(this.mods.strength, 'mapTo', features).onChange(val => this.mods.strength.mapTo = val)
+        f2.add(this.mods.strength, 'mapTo', features).name('strength').onChange(val => this.mods.strength.mapTo = val)
         f2.add(this.mods.strength, 'outmin').min(0).max(10).onChange(val => this.mods.strength.outmin = val)
         f2.add(this.mods.strength, 'outmax').min(0).max(10).onChange(val => this.mods.strength.outmax = val)
 
