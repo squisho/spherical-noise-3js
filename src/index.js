@@ -1,6 +1,7 @@
 import { Noise } from 'noisejs'
 
 import Extractr from './extractr'
+import config from './feature-config'
 import { createGui } from './gui'
 import Ico from './ico'
 import Plane from './plane'
@@ -8,25 +9,6 @@ import ThreeController from './three-controller'
 import { modulate, nodulate } from './utils'
 
 const noise = new Noise(Math.random())
-
-const FEATURES = [
-  'rms',
-  'zcr',
-  'energy',
-  'amplitudeSpectrum',
-  'spectralCentroid',
-  'spectralFlatness',
-  'spectralSlope',
-  'spectralRolloff',
-  'spectralSpread',
-  'spectralSkewness',
-  'spectralKurtosis',
-  'chroma',
-  'loudness',
-  'perceptualSpread',
-  'perceptualSharpness',
-  'mfcc'
-]
 
 const noiseConfig = {
   plane: { offset: 0, delta: 'spectralFlatness' },
@@ -55,7 +37,7 @@ ico.noiseFilter.createControls(gui)
 main()
 
 async function main() {
-  const ext = new Extractr(FEATURES)
+  const ext = new Extractr(config.features)
   await ext.setup()
   console.log(ext)
 
