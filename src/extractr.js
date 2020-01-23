@@ -15,7 +15,7 @@ export default class Extractr {
   constructor(features, alphas={}) {
     this.features = features
     this.avgs = features.reduce((acc, cur) => ({ ...acc, [cur]: 0 }), {})
-    this.alphas = features.reduce((acc, cur, i) => ({ ...acc, [cur]: alphas[cur] || 0.9 }), {})
+    this.alphas = features.reduce((acc, cur, i) => ({ ...acc, [cur]: alphas[cur] || 0.97 }), {})
   }
 
   setup = async () => {
