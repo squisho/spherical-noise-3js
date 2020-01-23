@@ -55,3 +55,18 @@ export const logMap = (val, inMin, inMax, outMin, outMax) => {
   const lin =  logScale.logarithmicToLinear(val)
   return modulate(lin, 0, 1, outMin, outMax)
 }
+
+export const tanhMap = (val, inMin, inMax, outMin, outMax) => {
+  const fInMin = -20, fInMax = 20
+  const fOutMin = -1, fOutMax = 1
+
+  // map the input from the in range to the functions domain
+  const x = modulate(val, inMin, inMax, fInMin, fInMax)
+
+  const y = Math.tanh(x)
+
+  // map the function's output to the desired range
+  const output = modulate(y, fOutMin, fOutMax, outMin, outMax)
+
+  return output
+}

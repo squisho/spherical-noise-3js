@@ -2,7 +2,7 @@ import { Noise } from 'noisejs'
 import * as THREE from 'three'
 
 import config from './feature-config'
-import { logMap, nodulate } from './utils'
+import { logMap, tanhMap } from './utils'
 
 const noise = new Noise(Math.random())
 
