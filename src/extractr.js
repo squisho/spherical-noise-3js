@@ -2,15 +2,6 @@ import Meyda from 'meyda'
 
 import { avg, max } from './utils'
 
-// The navigator object contains information about the browser.
-// this async call initializes audio input from the user
-// navigator.mediaDevices.enumerateDevices().then(devices => {
-//   const device = devices[6] // sound card output
-//   navigator.mediaDevices.getUserMedia({ audio: device, video: false }).then(stream => {
-//     if (!analyzer) initAnalyzer(stream)
-//   })
-// })
-
 export default class Extractr {
   constructor(features, alphas={}) {
     this.features = features
@@ -41,9 +32,9 @@ export default class Extractr {
     return this.analyzer
   }
 
-  getAvg = (feature, process) => {
+  getAvg = (feature) => {
     let curr = this.analyzer.get(feature)
-    if (process) curr = process(curr)
+    if (feature === 'loudness') curr = curr.total
 
     const a = this.alphas[feature]
     const prev = this.avgs[feature]

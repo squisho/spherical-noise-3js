@@ -92,19 +92,12 @@ export default class NoiseFilter {
             const curo = this.mods[o]
 
             if (curo.mapTo) {
-                let newVal
                 let feature = config.ranges[curo.mapTo]
+                if (curo.mapTo === 'loudness') feature = feature.total
 
-                if (curo.mapTo == 'loudness') {
-                    newVal = ext.getAvg('loudness', loudness => loudness.total)
-                    feature = feature.total
-                } else {
-                    newVal = ext.getAvg(curo.mapTo)
-                }
-                
-                let outVal = logMap(newVal, feature.min, feature.max, curo.min, curo.max)
+                const newVal = ext.getAvg(curo.mapTo)
 
-                settingsToUpdate[o] = outVal;
+                settingsToUpdate[o] = logMap(newVal, feature.min, feature.max, curo.min, curo.max)
             }
         }
 

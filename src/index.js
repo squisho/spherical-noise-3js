@@ -8,15 +8,12 @@ import Plane from './plane'
 import ThreeController from './three-controller'
 import { modulate, nodulate } from './utils'
 
+/** @todo use noise filter for planes */
+const noiseConfig = { plane: { offset: 0, delta: 'spectralFlatness' } }
 const noise = new Noise(Math.random())
-
-const noiseConfig = {
-  plane: { offset: 0, delta: 'spectralFlatness' },
-  ico: { offset: 0, delta: 'spectralFlatness' },
-}
-
-let originalVertices
 noise.seed(Math.random())
+
+const ext = new Extractr(config.features)
 
 const three = new ThreeController('container')
 
@@ -37,20 +34,19 @@ ico.noiseFilter.createControls(gui.addFolder('ico noise filter'))
 main()
 
 async function main() {
-  const ext = new Extractr(config.features)
   await ext.setup()
   console.log(ext)
 
   const render = () => {
     requestAnimationFrame(render)
-    update(ext)
+    update()
     three.renderer.render(three.scene, three.camera)
   }
 
   render()
 }
 
-function update(ext) {
+function update() {
   // ico.mesh.rotation.x+=2/100;
   // ico.mesh.rotation.y+=2/100;
 
@@ -59,14 +55,6 @@ function update(ext) {
 
   makeRoughGround(topPlane.mesh, modulate(stats.upper.avgFr, 0, 1, 5, 25))
   makeRoughGround(bottomPlane.mesh, modulate(stats.lower.maxFr, 0, 1, 5, 25))
-
-  const pow = Math.pow(stats.lower.maxFr, 0.8)
-
-  const flatness = ext.getAvg('spectralFlatness') // ext.analyzer.get('spectralFlatness')
-  const loudness = ext.analyzer.get('loudness').total
-
-  const size = nodulate(loudness, 0, 24, 1, 5, 1)
-  const roughness = (nodulate(flatness, 0, 1, 1, 2, 1) * size) / 2
 
   ico.update(ext)
 
@@ -78,12 +66,11 @@ function update(ext) {
     ext.getAvg('perceptualSharpness') / 2
   ]
 
-  // ico.setColor(color, true)
   planes.forEach(p => p.setColor(color, true))
 
-  //  updateLights()
+  // three.rotateLights()
 
-  updateOffsets(ext)
+  updateOffsets()
 }
 
 function makeRoughGround(mesh, distortionFr) {
@@ -101,14 +88,7 @@ function makeRoughGround(mesh, distortionFr) {
   mesh.geometry.computeFaceNormals()
 }
 
-function updateLights(ext) {
-  three.rotateLights()
-}
-
-function updateOffsets(ext) {
-  const icoDelta = nodulate(ext.getAvg(noiseConfig.ico.delta), 0.0, 1.0, 0.0001, 0.02, 0.0001)
-  noiseConfig.ico.offset += icoDelta
-
+function updateOffsets() {
   const planeDelta = nodulate(ext.getAvg(noiseConfig.plane.delta), 0.0, 1.0, 0.0, 0.05, 0.00001)
   noiseConfig.plane.offset += planeDelta
 }
