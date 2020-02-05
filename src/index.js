@@ -86,26 +86,6 @@ function update(ext) {
   updateOffsets(ext)
 }
 
-function makeRoughBall(mesh, shift, scale) {
-  mesh.geometry.vertices.forEach((vertex, i) => {
-    const localOffset = mesh.geometry.parameters.radius + shift
-    const amp = 7 * scale
-    const time = window.performance.now()
-    vertex.normalize()
-    const rf = s => (time * 0.00001 + noiseConfig.ico.offset) * s
-
-    let distance = localOffset + noise.perlin3(vertex.x + rf(7), vertex.y + rf(8), vertex.z + rf(9)) * amp
-
-    if (distance < 0.001) distance = 0.001
-    vertex.multiplyScalar(distance)
-  })
-
-  mesh.geometry.verticesNeedUpdate = true
-  mesh.geometry.normalsNeedUpdate = true
-  mesh.geometry.computeVertexNormals()
-  mesh.geometry.computeFaceNormals()
-}
-
 function makeRoughGround(mesh, distortionFr) {
   mesh.geometry.vertices.forEach(function(vertex, i) {
     const amp = 2 * distortionFr
