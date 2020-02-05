@@ -62,14 +62,15 @@ export default class NoiseFilter {
         let frequency = this.settings.baseRoughness
         let amplitude = this.settings.strength // 1
 
-        // cuz im a brat ;)
-        new Array(this.settings.numLayers).fill(null).forEach((_, i) => {
-            const point = p.clone().multiplyScalar(frequency).add(this.settings.center).addScalar(window.performance.now() * this.settings.speed)
+        for (let i = 0; i < this.settings.numLayers; i++) {
+            const offset = window.performance.now() * this.settings.speed
+            const point = p.clone().multiplyScalar(frequency).add(this.settings.center).addScalar(offset)
             const v = noise.perlin3(point.x, point.y, point.z) * amplitude
+
             noiseValue += v
             frequency *= this.settings.roughness
             amplitude *= this.settings.persistence
-        })
+        }
 
         return noiseValue
     }
@@ -89,6 +90,7 @@ export default class NoiseFilter {
 
         for (let o in this.mods) {
             const curo = this.mods[o]
+
             if (curo.mapTo) {
                 let newVal
                 let feature = config.ranges[curo.mapTo]
@@ -105,6 +107,7 @@ export default class NoiseFilter {
                 settingsToUpdate[o] = outVal;
             }
         }
+
         this.updateSettings(settingsToUpdate)
     }
 
