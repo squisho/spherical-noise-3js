@@ -32,7 +32,7 @@ three.scene.add(three.group)
 three.createLights()
 
 const gui = createGui(three)
-ico.noiseFilter.createControls(gui)
+ico.noiseFilter.createControls(gui.addFolder('ico noise filter'))
 
 main()
 
@@ -69,9 +69,6 @@ function update(ext) {
   const roughness = (nodulate(flatness, 0, 1, 1, 2, 1) * size) / 2
 
   ico.update(ext)
-  // makeRoughBall(ico, size, roughness)
-
-  // makeRoughBall(ico, modulate(pow, 0, 1, 0.00001, 10), modulate(upperAvgFr, 0, 1, 1, 10));
 
   three.group.rotation.y += 0.002
 
