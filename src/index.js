@@ -29,7 +29,7 @@ three.scene.add(three.group)
 three.createLights()
 
 const gui = createGui(three)
-ico.noiseFilter.createControls(gui.addFolder('ico noise filter'))
+ico.createControls(gui)
 
 main()
 

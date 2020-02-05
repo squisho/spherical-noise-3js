@@ -24,6 +24,14 @@ export default class Ico {
 
     createIcoGeometry = (radius, detail) => new THREE.IcosahedronGeometry(radius, detail)
 
+    createControls = gui => {
+        const folder = gui.addFolder('ico')
+
+        folder.add({ detail: 5 }, 'detail').name('detail').min(0).max(5).step(1).onChange(this.setDetail)
+
+        this.noiseFilter.createControls(folder)
+    }
+
     setDetail = detail => {
         const old = this.mesh.geometry 
         this.mesh.geometry = this.createIcoGeometry(10, detail)

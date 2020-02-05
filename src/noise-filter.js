@@ -105,28 +105,30 @@ export default class NoiseFilter {
     }
 
     createControls = gui => {
-        gui.add(this.mods.baseRoughness, 'mapTo', config.features).name('baseRoughness').onChange(val => this.mods.baseRoughness['mapTo'] = val)
-        gui.add(this.mods.baseRoughness, 'min').min(0).max(10).onChange(val => this.mods.baseRoughness.min = val)
-        gui.add(this.mods.baseRoughness, 'max').min(0).max(10).onChange(val => this.mods.baseRoughness.max = val)
+        const folder = gui.addFolder('noise filter')
 
-        // gui.add(this.mods, 'numLayers', features).onChange(val => this.mods.numLayers = {mapTo: val})
-        // gui.add(this.mods.numLayers, 'outmin').min(0).max(10).onChange(val => this.mods.numLayers = {outmin: val})
-        // gui.add(this.mods.numLayers, 'outmax').min(0).max(10).onChange(val => this.mods.numLayers = {outmax: val})
+        folder.add(this.mods.baseRoughness, 'mapTo', config.features).name('baseRoughness').onChange(val => this.mods.baseRoughness['mapTo'] = val)
+        folder.add(this.mods.baseRoughness, 'min').min(0).max(10).onChange(val => this.mods.baseRoughness.min = val)
+        folder.add(this.mods.baseRoughness, 'max').min(0).max(10).onChange(val => this.mods.baseRoughness.max = val)
 
-        gui.add(this.mods.persistence, 'mapTo', config.features).name('persistence').onChange(val => this.mods.persistence.mapTo = val)
-        gui.add(this.mods.persistence, 'min').min(0).max(10).onChange(val => this.mods.persistence.min = val)
-        gui.add(this.mods.persistence, 'max').min(0).max(10).onChange(val => this.mods.persistence.max = val)
+        // folder.add(this.mods, 'numLayers', features).onChange(val => this.mods.numLayers = {mapTo: val})
+        // folder.add(this.mods.numLayers, 'outmin').min(0).max(10).onChange(val => this.mods.numLayers = {outmin: val})
+        // folder.add(this.mods.numLayers, 'outmax').min(0).max(10).onChange(val => this.mods.numLayers = {outmax: val})
 
-        gui.add(this.mods.roughness, 'mapTo', config.features).name('roughness').onChange(val => this.mods.roughness.mapTo = val)
-        gui.add(this.mods.roughness, 'min').min(0).max(10).onChange(val => this.mods.roughness.min = val)
-        gui.add(this.mods.roughness, 'max').min(0).max(10).onChange(val => this.mods.roughness.max = val)
+        folder.add(this.mods.persistence, 'mapTo', config.features).name('persistence').onChange(val => this.mods.persistence.mapTo = val)
+        folder.add(this.mods.persistence, 'min').min(0).max(10).onChange(val => this.mods.persistence.min = val)
+        folder.add(this.mods.persistence, 'max').min(0).max(10).onChange(val => this.mods.persistence.max = val)
 
-        gui.add(this.mods.speed, 'mapTo', config.features).name('speed').onChange(val => this.mods.speed.mapTo = val)
-        gui.add(this.mods.speed, 'min').min(0).max(10).onChange(val => this.mods.speed.min = val)
-        gui.add(this.mods.speed, 'max').min(0).max(10).onChange(val => this.mods.speed.max = val)
+        folder.add(this.mods.roughness, 'mapTo', config.features).name('roughness').onChange(val => this.mods.roughness.mapTo = val)
+        folder.add(this.mods.roughness, 'min').min(0).max(10).onChange(val => this.mods.roughness.min = val)
+        folder.add(this.mods.roughness, 'max').min(0).max(10).onChange(val => this.mods.roughness.max = val)
 
-        gui.add(this.mods.strength, 'mapTo', config.features).name('strength').onChange(val => this.mods.strength.mapTo = val)
-        gui.add(this.mods.strength, 'min').min(0).max(10).onChange(val => this.mods.strength.min = val)
-        gui.add(this.mods.strength, 'max').min(0).max(10).onChange(val => this.mods.strength.max = val)
+        folder.add(this.mods.speed, 'mapTo', config.features).name('speed').onChange(val => this.mods.speed.mapTo = val)
+        folder.add(this.mods.speed, 'min').min(0).max(10).onChange(val => this.mods.speed.min = val)
+        folder.add(this.mods.speed, 'max').min(0).max(10).onChange(val => this.mods.speed.max = val)
+
+        folder.add(this.mods.strength, 'mapTo', config.features).name('strength').onChange(val => this.mods.strength.mapTo = val)
+        folder.add(this.mods.strength, 'min').min(0).max(10).onChange(val => this.mods.strength.min = val)
+        folder.add(this.mods.strength, 'max').min(0).max(10).onChange(val => this.mods.strength.max = val)
     } 
 }
