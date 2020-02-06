@@ -5,8 +5,6 @@ export const createGui = three => {
 
     const style = gui.addFolder('Style')
 
-    style.add({ detail: 5 }, 'detail').name('Ico Detail').min(0).max(5).step(1).onChange(three.setIcoDetail)
-
     style.addColor({ color: '#aaaaaa' }, 'color').name('Ambient Light').onChange(three.setAmbientLightColor)
 
     style.addColor({ color: '#ffffff' }, 'color').name('Spot Light').onChange(three.setSpotLightColor)
