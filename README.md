@@ -1,6 +1,6 @@
 # Spherical Noise
 
-noise applied to a icosahedron (geodesic sphere)
+Sound reactive noise applied to a icosahedron (geodesic sphere)
 
 ## todo
 - apply noise filter to planes
