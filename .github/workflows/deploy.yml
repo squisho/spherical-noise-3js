@@ -15,11 +15,10 @@ jobs:
         with:
           persist-credentials: false
 
-      - name: Install rsync 📚
-          run: |
-            apt-get update && apt-get install -y rsync
+      - name: Build
+        run: npm ci && npm run build
 
-      - name: Build and Deploy 🚀
+      - name: Deploy 🚀
         uses: JamesIves/github-pages-deploy-action@releases/v3
         with:
           ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
