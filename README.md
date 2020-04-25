@@ -1,13 +1,9 @@
 # Spherical Noise
 
-noise applied to a icosahedron (geodesic sphere)
-
-https://forum.processing.org/two/discussion/26718/how-to-correctly-apply-perlin-noise-to-a-sphere
+Sound reactive noise applied to a icosahedron (geodesic sphere)
 
 ## todo
-- get build configuration to work with github static sites
-    - rename docs to build hopefully
-    - avoid manually copying index.html
+- typescript?
 - apply noise filter to planes
 - map sound to lights
 - experiment with different backgrounds
