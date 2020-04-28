@@ -7,7 +7,8 @@
     "build": "npm run clean && npm run compile",
     "clean": "rimraf build",
     "compile": "webpack --config webpack.config.js",
-    "start": "webpack-dev-server --hot"
+    "start": "webpack-dev-server --hot",
+    "deploy": "gh-pages -d build"
   },
   "repository": {
     "type": "git",
@@ -18,7 +19,7 @@
   "bugs": {
     "url": "https://github.com/chrispetrone/spherical-noise-3js/issues"
   },
-  "homepage": "https://github.com/chrispetrone/spherical-noise-3js",
+  "homepage": "chrispetrone.github.io/spherical-noise-3js",
   "devDependencies": {
     "@babel/core": "^7.7.2",
     "@babel/plugin-proposal-class-properties": "^7.7.0",
