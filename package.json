@@ -18,7 +18,7 @@
   "bugs": {
     "url": "https://github.com/chrispetrone/spherical-noise-3js/issues"
   },
-  "homepage": "https://github.com/chrispetrone/spherical-noise-3js#readme",
+  "homepage": "https://github.com/chrispetrone/spherical-noise-3js",
   "devDependencies": {
     "@babel/core": "^7.7.2",
     "@babel/plugin-proposal-class-properties": "^7.7.0",
