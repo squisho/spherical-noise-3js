@@ -25,6 +25,7 @@ module.exports = {
   plugins: [
     new HtmlWebpackPlugin({
       template: 'src/index.html',
+      inject: false // was running 2 apps simultaneously, this prevents that.
     })
   ]
 };
