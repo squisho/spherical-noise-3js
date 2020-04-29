@@ -16,7 +16,7 @@ export default class Extractr {
     }).catch((err) => {
       alert('Need Microphone to react to ambient sound')
     })
-
+    
 
   
 
@@ -46,7 +46,7 @@ export default class Extractr {
     const prev = this.avgs[feature]
 
     this.avgs[feature] = prev * a + (1 - a) * curr
-
+    
     return this.avgs[feature]
   }
 

@@ -13,8 +13,6 @@ const noiseConfig = { plane: { offset: 0, delta: 'spectralFlatness' } }
 const noise = new Noise(Math.random())
 noise.seed(Math.random())
 
-const ext = new Extractr(config.features)
-
 const three = new ThreeController('container')
 
 const ico = new Ico({ detail: 5, radius: 15 })
@@ -31,27 +29,38 @@ three.createLights()
 const gui = createGui(three)
 ico.createControls(gui)
 
+
+const ext = new Extractr(config.features)
+
 main()
 
+
 async function main() {
-  await ext.setup()
-  console.log(ext)
 
   const render = () => {
     requestAnimationFrame(render)
     update()
     three.renderer.render(three.scene, three.camera)
   }
-
   render()
+  await ext.setup()
 }
+
+function ambientRender(){
+  three.group.rotation.y += 0.002
+  ico.updateAmbient()
+}
+
 
 function update() {
   // ico.mesh.rotation.x+=2/100;
   // ico.mesh.rotation.y+=2/100;
 
   const stats = ext.spectrumStats()
-  if (!stats) return
+  if (!stats) {
+    ambientRender()
+    return
+  }
 
   makeRoughGround(topPlane.mesh, modulate(stats.upper.avgFr, 0, 1, 5, 25))
   makeRoughGround(bottomPlane.mesh, modulate(stats.lower.maxFr, 0, 1, 5, 25))
@@ -60,15 +69,17 @@ function update() {
 
   three.group.rotation.y += 0.002
 
-  const color = [
-    ext.getAvg('rms') * 2,
-    ext.getAvg('perceptualSpread'),
-    ext.getAvg('perceptualSharpness') / 2
-  ]
+  
+  const r = ext.getAvg('perceptualSharpness')
+  const g = ext.getAvg('rms')
+  const b = ext.getAvg('energy')
 
+  const color = [
+    r, g, b
+  ]
   planes.forEach(p => p.setColor(color, true))
 
-  // three.rotateLights()
+  three.rotateLights()
 
   updateOffsets()
 }

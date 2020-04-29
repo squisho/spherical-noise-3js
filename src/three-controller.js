@@ -52,14 +52,20 @@ export default class ThreeController {
     lights.spot.castShadow = true
     this.scene.add(lights.spot)
 
-    // const sphere = new THREE.SphereBufferGeometry(1, 16, 8)
+    var sphere = new THREE.SphereBufferGeometry( 0.5, 8, 16 );
 
-    // lights.rotating = [0xff0040, 0x0040ff, 0x80ff80, 0xffaa00].map(color => {
-    //   const light = new THREE.PointLight(color, 0.5, 50)
-    //   // light.add(new THREE.Mesh(sphere, new THREE.MeshBasicMaterial({ color } )))
-    //   this.scene.add(light)
-    //   return light
-    // })
+    lights.orb1 = new THREE.PointLight (0xff0040, 1, 50)
+    lights.orb1.add (new THREE.Mesh( sphere, new THREE.MeshBasicMaterial({ color: 0xff0040 })))
+    this.scene.add(lights.orb1)
+
+    lights.orb2 = new THREE.PointLight (0x0040ff, 1, 50)
+    lights.orb2.add (new THREE.Mesh( sphere, new THREE.MeshBasicMaterial({ color: 0x0040ff })))
+    this.scene.add(lights.orb2)
+
+    lights.orb3 = new THREE.PointLight ( 0xeeee00, 1, 50)
+    lights.orb3.add (new THREE.Mesh( sphere, new THREE.MeshBasicMaterial({ color: 0xeeee00 })))
+    this.scene.add(lights.orb3)
+
 
     this.lights = lights
 
@@ -67,24 +73,20 @@ export default class ThreeController {
   }
 
   rotateLights = () => {
+    
     const time = Date.now() * 0.0005
-    const delta = this.clock.getDelta()
 
-    this.lights.rotating[0].position.y = Math.cos(time * 0.5) * 40
-    this.lights.rotating[0].position.z = Math.cos(time * 0.3) * 30
-    this.lights.rotating[0].position.x = Math.sin(time * 0.7) * 30
+    this.lights.orb1.position.y = Math.sin(time * 0.7) * 30
+    this.lights.orb1.position.z = Math.cos(time * 0.5) * 40
+    this.lights.orb1.position.x = Math.cos(time * 0.3) * 30
+    
+    this.lights.orb2.position.y = Math.cos(time * 0.3) * 30
+    this.lights.orb2.position.z = Math.sin(time * 0.5) * 40
+    this.lights.orb2.position.x = Math.sin(time * 0.7) * 30
 
-    this.lights.rotating[1].position.x = Math.cos(time * 0.3) * 30
-    this.lights.rotating[1].position.y = Math.sin(time * 0.5) * 40
-    this.lights.rotating[1].position.z = Math.sin(time * 0.7) * 30
-
-    this.lights.rotating[2].position.x = Math.sin(time * 0.7) * 30
-    this.lights.rotating[2].position.y = Math.cos(time * 0.3) * 40
-    this.lights.rotating[2].position.z = Math.sin(time * 0.5) * 30
-
-    this.lights.rotating[3].position.x = Math.sin(time * 0.3) * 30
-    this.lights.rotating[3].position.y = Math.cos(time * 0.7) * 40
-    this.lights.rotating[3].position.z = Math.sin(time * 0.5) * 30
+    this.lights.orb3.position.y = Math.sin(time * 0.7) * 30
+    this.lights.orb3.position.z = Math.cos(time * 0.3) * 40
+    this.lights.orb3.position.x = Math.sin(time * 0.5) * 30
   }
 
   setAmbientLightColor = (...a) => updateColor(this.lights.ambient, ...a)

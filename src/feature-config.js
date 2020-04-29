@@ -43,8 +43,8 @@ export default {
             specific: new Array(24).fill(null).map(() => range()),
             total: range(0, 24),
         },
-        perceptualSpread: range(),
-        perceptualSharpness: range(),
+        perceptualSpread: range(0.0, 1.0),
+        perceptualSharpness: range(0.0, 1.0),
         // mfcc: new Array(13).fill(null).map(() => range()),
     }
 }
