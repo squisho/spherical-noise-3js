@@ -3,6 +3,7 @@
 Sound reactive noise applied to a icosahedron (geodesic sphere)
 
 ## todo
+- eslint
 - typescript?
 - apply noise filter to planes
 - map sound to lights
