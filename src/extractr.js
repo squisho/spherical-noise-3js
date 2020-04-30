@@ -6,14 +6,19 @@ export default class Extractr {
   constructor(features, alphas={}) {
     this.features = features
     this.avgs = features.reduce((acc, cur) => ({ ...acc, [cur]: 0 }), {})
-    this.alphas = features.reduce((acc, cur, i) => ({ ...acc, [cur]: alphas[cur] || 0.9 }), {})
+    this.alphas = features.reduce((acc, cur, i) => ({ ...acc, [cur]: alphas[cur] || 0.95 }), {})
   }
 
   setup = async () => {
     const stream = await navigator.mediaDevices.getUserMedia({
       audio: true,
       video: false,
+    }).catch((err) => {
+      alert('Need Microphone to react to ambient sound')
     })
+    
+
+  
 
     const audioContext = new AudioContext()
     // set audio source to input stream from microphone
@@ -23,10 +28,11 @@ export default class Extractr {
     this.analyzer = Meyda.createMeydaAnalyzer({
       audioContext: audioContext,
       source: source,
-      bufferSize: 256,
+      bufferSize: 2048, // >= 1024 seems to stop ball from disappearing randomly
       featureExtractors: this.features,
       callback: () => null,
     })
+    console.log(this.features)
 
     this.analyzer.start()
     return this.analyzer
@@ -40,11 +46,13 @@ export default class Extractr {
     const prev = this.avgs[feature]
 
     this.avgs[feature] = prev * a + (1 - a) * curr
-
+    
     return this.avgs[feature]
   }
 
   spectrumStats = () => {
+    
+    if (!this.analyzer) return null
     const soundData = this.analyzer.get('amplitudeSpectrum')
     if (!soundData) return null
 
