@@ -7,7 +7,7 @@ export default class Ico {
     constructor({ radius, detail }) {
         const material = new THREE.MeshPhongMaterial({
             color: 0xaa90dd,
-            reflectivity:  100,
+            reflectivity: 100,
             // flatShading: true,
             // wireframe: true,
         })
@@ -24,7 +24,7 @@ export default class Ico {
 
     createIcoGeometry = (radius, detail) => new THREE.IcosahedronGeometry(radius, detail)
 
-    createControls = gui => {
+    createControls = (gui) => {
         const folder = gui.addFolder('ico')
 
         folder.add({ detail: 5 }, 'detail').name('detail').min(0).max(5).step(1).onChange(this.setDetail)
@@ -32,8 +32,8 @@ export default class Ico {
         this.noiseFilter.createControls(folder)
     }
 
-    setDetail = detail => {
-        const old = this.mesh.geometry 
+    setDetail = (detail) => {
+        const old = this.mesh.geometry
         this.mesh.geometry = this.createIcoGeometry(10, detail)
         old.dispose()
     }
@@ -45,7 +45,7 @@ export default class Ico {
 
         const minRadius = 1
         const localOffset = this.mesh.geometry.parameters.radius // + shift
-        this.mesh.geometry.vertices.forEach(vertex => {
+        this.mesh.geometry.vertices.forEach((vertex) => {
             vertex.normalize()
             let dist = localOffset + this.noiseFilter.evaluate(vertex)
             if (dist < minRadius) dist = minRadius
@@ -59,11 +59,11 @@ export default class Ico {
         this.mesh.geometry.computeVertexNormals()
         this.mesh.geometry.computeFaceNormals()
     }
-    updateAmbient = () =>{
+    updateAmbient = () => {
         // For updating ico with no mic access
         const minRadius = 1
         const localOffset = this.mesh.geometry.parameters.radius // + shift
-        this.mesh.geometry.vertices.forEach(vertex => {
+        this.mesh.geometry.vertices.forEach((vertex) => {
             vertex.normalize()
             let dist = localOffset + this.noiseFilter.evaluate(vertex)
             if (dist < minRadius) dist = minRadius
@@ -76,7 +76,7 @@ export default class Ico {
         this.mesh.geometry.computeFaceNormals()
     }
 
-    soundToColor = ext => {
+    soundToColor = (ext) => {
         const chroma = ext.analyzer.get('chroma')
         const maxIndex = chroma.indexOf(1)
         const hue = modulate(maxIndex, 0, 12, 0, 360) + this.offset

@@ -1,6 +1,6 @@
-import { ansiRegex } from "ansi-colors";
+import { ansiRegex } from 'ansi-colors'
 
-const range = (min=0, max=1) => ({ min, max })
+const range = (min = 0, max = 1) => ({ min, max })
 
 export default {
     features: [
@@ -19,7 +19,7 @@ export default {
         'loudness',
         'perceptualSpread',
         'perceptualSharpness',
-        'mfcc'
+        'mfcc',
     ],
     ranges: {
         // time-domain
@@ -46,5 +46,5 @@ export default {
         perceptualSpread: range(0.0, 1.0),
         perceptualSharpness: range(0.0, 1.0),
         // mfcc: new Array(13).fill(null).map(() => range()),
-    }
+    },
 }
