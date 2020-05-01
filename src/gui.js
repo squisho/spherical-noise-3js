@@ -1,7 +1,7 @@
 import * as dat from 'dat.gui'
 
-export const createGui = three => {
-    const gui = new dat.GUI({ height : 5 * 32 - 1 })
+export const createGui = (three) => {
+    const gui = new dat.GUI({ height: 5 * 32 - 1 })
 
     const style = gui.addFolder('Style')
 

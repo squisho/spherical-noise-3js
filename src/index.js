@@ -21,7 +21,7 @@ three.group.add(ico.mesh)
 const topPlane = new Plane(0, 30, 0)
 const bottomPlane = new Plane(0, -30, 0)
 const planes = [topPlane, bottomPlane]
-planes.forEach(p => three.group.add(p.mesh))
+planes.forEach((p) => three.group.add(p.mesh))
 
 three.scene.add(three.group)
 three.createLights()
@@ -29,77 +29,70 @@ three.createLights()
 const gui = createGui(three)
 ico.createControls(gui)
 
-
 const ext = new Extractr(config.features)
 
 main()
 
-
 async function main() {
-
-  const render = () => {
-    requestAnimationFrame(render)
-    update()
-    three.renderer.render(three.scene, three.camera)
-  }
-  render()
-  await ext.setup()
+    const render = () => {
+        requestAnimationFrame(render)
+        update()
+        three.renderer.render(three.scene, three.camera)
+    }
+    render()
+    await ext.setup()
 }
 
-function ambientRender(){
-  three.group.rotation.y += 0.002
-  ico.updateAmbient()
+function ambientRender() {
+    three.group.rotation.y += 0.002
+    ico.updateAmbient()
 }
-
 
 function update() {
-  // ico.mesh.rotation.x+=2/100;
-  // ico.mesh.rotation.y+=2/100;
+    // ico.mesh.rotation.x+=2/100;
+    // ico.mesh.rotation.y+=2/100;
 
-  const stats = ext.spectrumStats()
-  if (!stats) {
-    ambientRender()
-    return
-  }
+    const stats = ext.spectrumStats()
+    if (!stats) {
+        ambientRender()
+        return
+    }
 
-  makeRoughGround(topPlane.mesh, modulate(stats.upper.avgFr, 0, 1, 5, 25))
-  makeRoughGround(bottomPlane.mesh, modulate(stats.lower.maxFr, 0, 1, 5, 25))
+    makeRoughGround(topPlane.mesh, modulate(stats.upper.avgFr, 0, 1, 5, 25))
+    makeRoughGround(bottomPlane.mesh, modulate(stats.lower.maxFr, 0, 1, 5, 25))
 
-  ico.update(ext)
+    ico.update(ext)
 
-  three.group.rotation.y += 0.002
+    three.group.rotation.y += 0.002
 
-  
-  const r = ext.getAvg('perceptualSharpness')
-  const g = ext.getAvg('rms')
-  const b = ext.getAvg('energy')
+    const r = ext.getAvg('perceptualSharpness')
+    const g = ext.getAvg('rms')
+    const b = ext.getAvg('energy')
 
-  const color = [
-    r, g, b
-  ]
-  planes.forEach(p => p.setColor(color, true))
+    const color = [r, g, b]
+    planes.forEach((p) => p.setColor(color, true))
 
-  three.rotateLights()
+    three.rotateLights()
 
-  updateOffsets()
+    updateOffsets()
 }
 
 function makeRoughGround(mesh, distortionFr) {
-  mesh.geometry.vertices.forEach(function(vertex, i) {
-    const amp = 2 * distortionFr
-    const time = Date.now()
-    const rf = s => time * s + noiseConfig.plane.offset
-    const distance = noise.perlin2(vertex.x + rf(0.0003), vertex.y + rf(0.0001)) * amp
-    vertex.z = distance
-  })
+    mesh.geometry.vertices.forEach(function (vertex, i) {
+        const amp = 2 * distortionFr
+        const time = Date.now()
+        const rf = (s) => time * s + noiseConfig.plane.offset
+        const distance = noise.perlin2(vertex.x + rf(0.0003), vertex.y + rf(0.0001)) * amp
+        vertex.z = distance
+    })
 
-  mesh.geometry.verticesNeedUpdate = true
-  mesh.geometry.normalsNeedUpdate = true
-  mesh.geometry.computeVertexNormals()
-  mesh.geometry.computeFaceNormals()
+    mesh.geometry.verticesNeedUpdate = true
+    mesh.geometry.normalsNeedUpdate = true
+    mesh.geometry.computeVertexNormals()
+    mesh.geometry.computeFaceNormals()
 }
 
 function updateOffsets() {
-  const planeDelta = nodulate(ext.getAvg(noiseConfig.plane.delta), 0.0, 1.0, 0.0, 0.05, 0.00001)
-  noiseConfig.plane.offset += planeDelta
+    const planeDelta = nodulate(ext.getAvg(noiseConfig.plane.delta), 0.0, 1.0, 0.0, 0.05, 0.00001)
+    noiseConfig.plane.offset += planeDelta
 }
