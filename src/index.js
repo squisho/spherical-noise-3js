@@ -33,7 +33,7 @@ const ext = new Extractr(config.features)
 
 function ambientRender() {
     three.group.rotation.y += 0.002
-    ico.updateAmbient()
+    ico.update()
 }
 
 function makeRoughGround(mesh, distortionFr) {
