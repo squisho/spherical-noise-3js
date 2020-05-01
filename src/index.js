@@ -31,21 +31,29 @@ ico.createControls(gui)
 
 const ext = new Extractr(config.features)
 
-main()
-
-async function main() {
-    const render = () => {
-        requestAnimationFrame(render)
-        update()
-        three.renderer.render(three.scene, three.camera)
-    }
-    render()
-    await ext.setup()
-}
-
 function ambientRender() {
     three.group.rotation.y += 0.002
     ico.update()
+}
+
+function makeRoughGround(mesh, distortionFr) {
+    mesh.geometry.vertices.forEach((vertex) => {
+        const amp = 2 * distortionFr
+        const time = Date.now()
+        const rf = (s) => time * s + noiseConfig.plane.offset
+        const distance = noise.perlin2(vertex.x + rf(0.0003), vertex.y + rf(0.0001)) * amp
+        vertex.z = distance
+    })
+
+    mesh.geometry.verticesNeedUpdate = true
+    mesh.geometry.normalsNeedUpdate = true
+    mesh.geometry.computeVertexNormals()
+    mesh.geometry.computeFaceNormals()
+}
+
+function updateOffsets() {
+    const planeDelta = nodulate(ext.getAvg(noiseConfig.plane.delta), 0.0, 1.0, 0.0, 0.05, 0.00001)
+    noiseConfig.plane.offset += planeDelta
 }
 
 function update() {
@@ -77,22 +85,14 @@ function update() {
     updateOffsets()
 }
 
-function makeRoughGround(mesh, distortionFr) {
-    mesh.geometry.vertices.forEach(function (vertex, i) {
-        const amp = 2 * distortionFr
-        const time = Date.now()
-        const rf = (s) => time * s + noiseConfig.plane.offset
-        const distance = noise.perlin2(vertex.x + rf(0.0003), vertex.y + rf(0.0001)) * amp
-        vertex.z = distance
-    })
-
-    mesh.geometry.verticesNeedUpdate = true
-    mesh.geometry.normalsNeedUpdate = true
-    mesh.geometry.computeVertexNormals()
-    mesh.geometry.computeFaceNormals()
+async function main() {
+    const render = () => {
+        requestAnimationFrame(render)
+        update()
+        three.renderer.render(three.scene, three.camera)
+    }
+    render()
+    await ext.setup()
 }
 
-function updateOffsets() {
-    const planeDelta = nodulate(ext.getAvg(noiseConfig.plane.delta), 0.0, 1.0, 0.0, 0.05, 0.00001)
-    noiseConfig.plane.offset += planeDelta
-}
+main()

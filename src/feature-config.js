@@ -1,5 +1,3 @@
-import { ansiRegex } from 'ansi-colors'
-
 const range = (min = 0, max = 1) => ({ min, max })
 
 export default {

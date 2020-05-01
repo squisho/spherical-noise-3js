@@ -12,19 +12,19 @@ export function modulate(val, minVal, maxVal, outMin, outMax) {
 }
 
 export function avg(arr) {
-    const total = arr.reduce(function (sum, b) {
+    const total = arr.reduce((sum, b) => {
         return sum + b
     })
     return total / arr.length
 }
 
 export function max(arr) {
-    return arr.reduce(function (a, b) {
+    return arr.reduce((a, b) => {
         return Math.max(a, b)
     })
 }
 
-export const noNaN = (number, dflt = 0) => (isNaN(number) ? dflt : number)
+export const noNaN = (number, dflt = 0) => (Math.isNaN(number) ? dflt : number)
 
 export const nodulate = (n, iMin, iMax, oMin, oMax, dflt) => noNaN(modulate(n, iMin, iMax, oMin, oMax), dflt)
 

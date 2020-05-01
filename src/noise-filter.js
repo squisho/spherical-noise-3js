@@ -2,7 +2,7 @@ import { Noise } from 'noisejs'
 import * as THREE from 'three'
 
 import config from './feature-config'
-import { logMap, nodulate } from './utils'
+import { logMap } from './utils'
 
 const noise = new Noise(Math.random())
 
@@ -88,9 +88,7 @@ export default class NoiseFilter {
     update = (ext) => {
         const settingsToUpdate = {}
 
-        for (let o in this.mods) {
-            const curo = this.mods[o]
-
+        this.mods.forEach((curo, o) => {
             if (curo.mapTo) {
                 let feature = config.ranges[curo.mapTo]
                 if (curo.mapTo === 'loudness') feature = feature.total
@@ -99,7 +97,7 @@ export default class NoiseFilter {
 
                 settingsToUpdate[o] = logMap(newVal, feature.min, feature.max, curo.min, curo.max)
             }
-        }
+        })
 
         this.updateSettings(settingsToUpdate)
     }
@@ -110,62 +108,86 @@ export default class NoiseFilter {
         folder
             .add(this.mods.baseRoughness, 'mapTo', config.features)
             .name('baseRoughness')
-            .onChange((val) => (this.mods.baseRoughness['mapTo'] = val))
+            .onChange((val) => {
+                this.mods.baseRoughness.mapTo = val
+            })
         folder
             .add(this.mods.baseRoughness, 'min')
             .min(0)
             .max(10)
-            .onChange((val) => (this.mods.baseRoughness.min = val))
+            .onChange((val) => {
+                this.mods.baseRoughness.min = val
+            })
         folder
             .add(this.mods.baseRoughness, 'max')
             .min(0)
             .max(10)
-            .onChange((val) => (this.mods.baseRoughness.max = val))
+            .onChange((val) => {
+                this.mods.baseRoughness.max = val
+            })
 
         folder
             .add(this.mods.numLayers, 'mapTo', config.features)
             .name('numLayers')
-            .onChange((val) => (this.mods.numLayers.mapTo = val))
+            .onChange((val) => {
+                this.mods.numLayers.mapTo = val
+            })
         folder
             .add(this.mods.numLayers, 'min')
             .min(0)
             .max(10)
-            .onChange((val) => (this.mods.numLayers.min = val))
+            .onChange((val) => {
+                this.mods.numLayers.min = val
+            })
         folder
             .add(this.mods.numLayers, 'max')
             .min(0)
             .max(10)
-            .onChange((val) => (this.mods.numLayers.max = val))
+            .onChange((val) => {
+                this.mods.numLayers.max = val
+            })
 
         folder
             .add(this.mods.persistence, 'mapTo', config.features)
             .name('persistence')
-            .onChange((val) => (this.mods.persistence.mapTo = val))
+            .onChange((val) => {
+                this.mods.persistence.mapTo = val
+            })
         folder
             .add(this.mods.persistence, 'min')
             .min(0)
             .max(10)
-            .onChange((val) => (this.mods.persistence.min = val))
+            .onChange((val) => {
+                this.mods.persistence.min = val
+            })
         folder
             .add(this.mods.persistence, 'max')
             .min(0)
             .max(10)
-            .onChange((val) => (this.mods.persistence.max = val))
+            .onChange((val) => {
+                this.mods.persistence.max = val
+            })
 
         folder
             .add(this.mods.roughness, 'mapTo', config.features)
             .name('roughness')
-            .onChange((val) => (this.mods.roughness.mapTo = val))
+            .onChange((val) => {
+                this.mods.roughness.mapTo = val
+            })
         folder
             .add(this.mods.roughness, 'min')
             .min(0)
             .max(10)
-            .onChange((val) => (this.mods.roughness.min = val))
+            .onChange((val) => {
+                this.mods.roughness.min = val
+            })
         folder
             .add(this.mods.roughness, 'max')
             .min(0)
             .max(10)
-            .onChange((val) => (this.mods.roughness.max = val))
+            .onChange((val) => {
+                this.mods.roughness.max = val
+            })
 
         // folder.add(this.mods.speed, 'mapTo', config.features).name('speed').onChange(val => this.mods.speed.mapTo = val)
         // folder.add(this.mods.speed, 'min').min(0).max(10).onChange(val => this.mods.speed.min = val)
@@ -174,16 +196,22 @@ export default class NoiseFilter {
         folder
             .add(this.mods.strength, 'mapTo', config.features)
             .name('strength')
-            .onChange((val) => (this.mods.strength.mapTo = val))
+            .onChange((val) => {
+                this.mods.strength.mapTo = val
+            })
         folder
             .add(this.mods.strength, 'min')
             .min(0)
             .max(10)
-            .onChange((val) => (this.mods.strength.min = val))
+            .onChange((val) => {
+                this.mods.strength.min = val
+            })
         folder
             .add(this.mods.strength, 'max')
             .min(0)
             .max(10)
-            .onChange((val) => (this.mods.strength.max = val))
+            .onChange((val) => {
+                this.mods.strength.max = val
+            })
     }
 }
