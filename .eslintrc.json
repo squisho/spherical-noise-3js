@@ -1,14 +1,19 @@
 {
+    "env": {
+        "browser": true
+    },
     "extends": [
-        "airbnb",
+        "airbnb-base",
         "prettier"
     ],
+    "parser": "babel-eslint",
     "plugins": [
         "prettier"
     ],
     "rules": {
-        "prettier/prettier": [
-            "error"
-        ]
+        "import/prefer-default-export": "warn",
+        "no-param-reassign": "warn",
+        "no-plusplus": "off",
+        "prettier/prettier": "error"
     }
 }

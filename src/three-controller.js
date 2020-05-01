@@ -52,7 +52,7 @@ export default class ThreeController {
         lights.spot.castShadow = true
         this.scene.add(lights.spot)
 
-        var sphere = new THREE.SphereBufferGeometry(0.5, 8, 16)
+        const sphere = new THREE.SphereBufferGeometry(0.5, 8, 16)
 
         lights.orb1 = new THREE.PointLight(0xff0040, 1, 50)
         lights.orb1.add(new THREE.Mesh(sphere, new THREE.MeshBasicMaterial({ color: 0xff0040 })))

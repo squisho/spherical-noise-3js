@@ -6,7 +6,7 @@ export default class Extractr {
     constructor(features, alphas = {}) {
         this.features = features
         this.avgs = features.reduce((acc, cur) => ({ ...acc, [cur]: 0 }), {})
-        this.alphas = features.reduce((acc, cur, i) => ({ ...acc, [cur]: alphas[cur] || 0.95 }), {})
+        this.alphas = features.reduce((acc, cur) => ({ ...acc, [cur]: alphas[cur] || 0.95 }), {})
     }
 
     setup = async () => {
@@ -15,8 +15,9 @@ export default class Extractr {
                 audio: true,
                 video: false,
             })
-            .catch((err) => {
-                alert('Need Microphone to react to ambient sound')
+            .catch(() => {
+                /** @todo instead of using an alert, we should display a nice overlay message and continue to poll for audio */
+                window.alert('Need Microphone to react to ambient sound')
             })
 
         const audioContext = new AudioContext()
@@ -25,13 +26,13 @@ export default class Extractr {
         const source = audioContext.createMediaStreamSource(stream)
 
         this.analyzer = Meyda.createMeydaAnalyzer({
-            audioContext: audioContext,
-            source: source,
+            audioContext,
+            source,
             bufferSize: 2048, // >= 1024 seems to stop ball from disappearing randomly
             featureExtractors: this.features,
             callback: () => null,
         })
-        console.log(this.features)
+        console.log('DEBUG - features', this.features)
 
         this.analyzer.start()
         return this.analyzer

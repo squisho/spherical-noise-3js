@@ -59,6 +59,7 @@ export default class Ico {
         this.mesh.geometry.computeVertexNormals()
         this.mesh.geometry.computeFaceNormals()
     }
+
     updateAmbient = () => {
         // For updating ico with no mic access
         const minRadius = 1
