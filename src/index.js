@@ -45,7 +45,7 @@ async function main() {
 
 function ambientRender() {
     three.group.rotation.y += 0.002
-    ico.updateAmbient()
+    ico.update()
 }
 
 function update() {

@@ -41,7 +41,9 @@ export default class Ico {
     setColor = (...a) => updateColor(this.mesh.material, ...a)
 
     update = (extractr) => {
-        this.noiseFilter.update(extractr)
+        if (extractr) {
+            this.noiseFilter.update(extractr)
+        }
 
         const minRadius = 1
         const localOffset = this.mesh.geometry.parameters.radius // + shift
@@ -52,23 +54,9 @@ export default class Ico {
             vertex.multiplyScalar(dist)
         })
 
-        this.soundToColor(extractr)
-
-        this.mesh.geometry.verticesNeedUpdate = true
-        this.mesh.geometry.normalsNeedUpdate = true
-        this.mesh.geometry.computeVertexNormals()
-        this.mesh.geometry.computeFaceNormals()
-    }
-    updateAmbient = () => {
-        // For updating ico with no mic access
-        const minRadius = 1
-        const localOffset = this.mesh.geometry.parameters.radius // + shift
-        this.mesh.geometry.vertices.forEach((vertex) => {
-            vertex.normalize()
-            let dist = localOffset + this.noiseFilter.evaluate(vertex)
-            if (dist < minRadius) dist = minRadius
-            vertex.multiplyScalar(dist)
-        })
+        if (extractr) {
+            this.soundToColor(extractr)
+        }
 
         this.mesh.geometry.verticesNeedUpdate = true
         this.mesh.geometry.normalsNeedUpdate = true
