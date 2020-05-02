@@ -87,15 +87,20 @@ export default class NoiseFilter {
 
     update = (ext) => {
         const settingsToUpdate = {}
+        Object.keys(this.mods).forEach((curo) => {
+            if (this.mods[curo].mapTo) {
+                let feature = config.ranges[this.mods[curo].mapTo]
+                if (this.mods[curo].mapTo === 'loudness') feature = feature.total
 
-        Object.keys(this.mods).forEach((curo, o) => {
-            if (curo.mapTo) {
-                let feature = config.ranges[curo.mapTo]
-                if (curo.mapTo === 'loudness') feature = feature.total
+                const newVal = ext.getAvg(this.mods[curo].mapTo)
 
-                const newVal = ext.getAvg(curo.mapTo)
-
-                settingsToUpdate[o] = logMap(newVal, feature.min, feature.max, curo.min, curo.max)
+                settingsToUpdate[curo] = logMap(
+                    newVal,
+                    feature.min,
+                    feature.max,
+                    this.mods[curo].min,
+                    this.mods[curo].max
+                )
             }
         })
 
