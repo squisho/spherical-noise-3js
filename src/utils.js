@@ -24,7 +24,7 @@ export function max(arr) {
     })
 }
 
-export const noNaN = (number, dflt = 0) => (Math.isNaN(number) ? dflt : number)
+export const noNaN = (number, dflt = 0) => (Number.isNaN(number) ? dflt : number)
 
 export const nodulate = (n, iMin, iMax, oMin, oMax, dflt) => noNaN(modulate(n, iMin, iMax, oMin, oMax), dflt)
 

@@ -88,7 +88,7 @@ export default class NoiseFilter {
     update = (ext) => {
         const settingsToUpdate = {}
 
-        this.mods.forEach((curo, o) => {
+        Object.keys(this.mods).forEach((curo, o) => {
             if (curo.mapTo) {
                 let feature = config.ranges[curo.mapTo]
                 if (curo.mapTo === 'loudness') feature = feature.total
