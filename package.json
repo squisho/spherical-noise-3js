@@ -10,8 +10,8 @@
     "start": "webpack-dev-server --hot",
     "deploy": "gh-pages -d build",
     "lint": "npx eslint --fix src/**/*.js; echo \"Lint trap emptied.\" && exit 0",
-    "pretty": "npx prettier --write src && echo \"\"",
-    "pretty:check": "npx prettier --check src"
+    "pretty": "npx prettier --write src/* && echo \"\"",
+    "pretty:check": "npx prettier --check src/*"
   },
   "repository": {
     "type": "git",
