@@ -5,6 +5,7 @@ Sound reactive noise applied to a icosahedron (geodesic sphere)
 ## todo
 - typescript?
 - apply noise filter to planes
+- use shaders
 - map sound to lights
 - experiment with different backgrounds
     - possibly more spheres with different noise filter configs
